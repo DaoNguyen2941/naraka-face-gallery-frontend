@@ -1,9 +1,23 @@
-'use client'
-
 import { Sidebar } from '../components/Sidebar'
 import { Header } from '../components/Header'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+import type { Metadata } from "next"
+import { isTokenValid } from "@/lib/utils/jwt"
 
-export default function DashBoardLayout({ children }: { children: React.ReactNode }) {
+export const metadata: Metadata = {
+  title: "Admin dashboards",
+  description: "Trang quản trị",
+}
+
+export default async function DashBoardLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('Authentication')?.value
+
+ if (!token || !isTokenValid(token)) {
+    redirect('/admin/login')
+  }
+
   return (
     <div className="flex h-screen bg-black text-white">
       <Sidebar />

@@ -1,10 +1,11 @@
-'use client'
+"use client"
 
-import { useForm } from "react-hook-form"
+import { useForm, SubmitHandler } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
-
+import { useMutation } from "@tanstack/react-query";
+import { adminLoginService, AdminLoginDto } from "@/lib/services/admin/auth"
 const schema = z.object({
   username: z.string().min(1, "Tên đăng nhập bắt buộc"),
   password: z.string().min(1, "Mật khẩu bắt buộc"),
@@ -14,6 +15,7 @@ type FormData = z.infer<typeof schema>
 
 export default function AdminLogin() {
   const router = useRouter()
+
   const {
     register,
     handleSubmit,
@@ -22,28 +24,33 @@ export default function AdminLogin() {
     resolver: zodResolver(schema)
   })
 
-  const onSubmit = (data: FormData) => {
-    if (data.username === "admin" && data.password === "naraka123") {
-      localStorage.setItem("isAdmin", "true")
-      router.push("/admin/dashboards")
-    } else {
-      alert("Sai tên đăng nhập hoặc mật khẩu!")
-    }
-  }
+  const loginMutation = useMutation({
+    mutationFn: (data: AdminLoginDto) => adminLoginService(data),
+    onSuccess: (data) => {
+      const token = data.token;
+      if (token) {
+        localStorage.setItem("token", token);
+        router.push("/admin/dashboards")
+        //  fetch thông tin user
+      }
+    },
+    onError: (error) => {
+      console.error("❌ Đăng nhập thất bại:", error);
+    },
+  });
+
+  const onSubmit: SubmitHandler<AdminLoginDto> = (data) => {
+    loginMutation.mutate(data);
+  };
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden">
-      {/* Background image */}
       <img
         src="https://cdn.cloudflare.steamstatic.com/steam/apps/1203220/ss_71fe1be9ac44a747aad1f94382c53f18a6183bb3.1920x1080.jpg"
         alt="Naraka background"
         className="absolute inset-0 w-full h-full object-cover opacity-30"
       />
-
-      {/* Overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-60" />
-
-      {/* Card */}
       <div className="relative z-10 bg-gray-900 p-8 rounded-2xl shadow-lg max-w-md w-full text-white">
         <h2 className="text-3xl font-bold text-center mb-6">Admin Login</h2>
 
@@ -77,8 +84,9 @@ export default function AdminLogin() {
           <button
             type="submit"
             className="w-full py-2 bg-red-600 hover:bg-red-700 rounded text-white font-semibold transition"
+            disabled={loginMutation.isPending}
           >
-            Đăng nhập
+            {loginMutation.isPending ? "Đang đăng nhập..." : "Đăng nhập"}
           </button>
         </form>
       </div>

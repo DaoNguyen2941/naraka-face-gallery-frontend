@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import {
   LayoutDashboard,
   Users,
@@ -14,8 +14,10 @@ import {
 const navItems = [
   { label: 'Dashboard', href: '/admin/dashboards', icon: <LayoutDashboard className="w-5 h-5" /> },
   { label: 'Nhân vật', href: '/admin/dashboards/characters', icon: <Users className="w-5 h-5" /> },
-  { label: 'Danh mục mặt', href: '/admin/face-categories', icon: <Folder className="w-5 h-5" /> },
-  { label: 'Ảnh mặt', href: '/admin/face-images', icon: <ImageIcon className="w-5 h-5" /> },
+  { label: 'Danh mục mặt', href: '/admin/dashboards/face-categories', icon: <Folder className="w-5 h-5" /> },
+  { label: 'Ảnh mặt', href: '/admin/dashboards/face-images', icon: <ImageIcon className="w-5 h-5" /> },
+  { label: 'Tags', href: '/admin/dashboards/tags', icon: <ImageIcon className="w-5 h-5" /> },
+  { label: 'Lịch sủ hoạt động', href: '/admin/dashboards/history', icon: <ImageIcon className="w-5 h-5" /> },
 ]
 
 export function Sidebar() {

@@ -1,11 +1,20 @@
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { Plus, Users, ImageIcon } from "lucide-react"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Users, ImageIcon, Folder } from "lucide-react"
 
 export default function AdminHome() {
+  const stats = {
+    characters: 12,
+    faces: 48,
+    categories: 6,
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -21,52 +30,39 @@ export default function AdminHome() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">12</div>
+            <div className="text-2xl font-bold">{stats.characters}</div>
             <p className="text-xs text-muted-foreground">Tổng số nhân vật</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Số ảnh mặt</CardTitle>
+            <CardTitle className="text-sm font-medium">Ảnh mặt</CardTitle>
             <ImageIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">48</div>
-            <p className="text-xs text-muted-foreground">Ảnh QR khuôn mặt</p>
+            <div className="text-2xl font-bold">{stats.faces}</div>
+            <p className="text-xs text-muted-foreground">Tổng số ảnh khuôn mặt</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Số danh mục</CardTitle>
-            <ImageIcon className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Danh mục</CardTitle>
+            <Folder className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">48</div>
-            <p className="text-xs text-muted-foreground">Ảnh QR khuôn mặt</p>
+            <div className="text-2xl font-bold">{stats.categories}</div>
+            <p className="text-xs text-muted-foreground">Số danh mục ảnh</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Hành động nhanh */}
-      <div className="space-y-2">
-        <h2 className="text-lg font-semibold">Hành động nhanh</h2>
-        <div className="flex gap-2 flex-wrap">
-          <Link href="/admin/dashboards/characters">
-            <Button variant="default">
-              <Plus className="mr-2 h-4 w-4" />
-              Quản lý nhân vật
-            </Button>
-          </Link>
-          <Link href="/admin/images">
-            <Button variant="secondary">
-              <ImageIcon className="mr-2 h-4 w-4" />
-              Quản lý ảnh mặt
-            </Button>
-          </Link>
-        </div>
-      </div>
+      <hr className="my-4 border-muted" />
+
+      <h2 className="text-lg font-semibold">Truy cập gần đây</h2>
+      <p className="text-sm text-muted-foreground">Hiển thị những trang bạn mới vào gần đây.</p>
+
     </div>
   )
 }
