@@ -9,12 +9,6 @@ export const metadata: Metadata = {
   description: "Trang quản trị",
 }
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const cookieStore = await  cookies()
-  const token = cookieStore.get('Authentication')?.value
-
-  if (!token || !isTokenValid(token)) {
-    redirect('/admin/login')
-  }
 
   return (
     <div className="bg-black text-white min-h-screen">

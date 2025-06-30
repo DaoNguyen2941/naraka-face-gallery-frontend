@@ -5,6 +5,7 @@ import { isTokenValid } from "@/lib/utils/jwt"
 export default async function Page() {
     const cookieStore = await cookies()
     const token = cookieStore.get('Authentication')?.value
+
     if (!token || !isTokenValid(token)) {
         redirect('/admin/login')
     } else {
