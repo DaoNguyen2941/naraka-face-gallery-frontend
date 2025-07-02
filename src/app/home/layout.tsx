@@ -1,5 +1,6 @@
 import '../../styles/globals.css';
 import LayoutShell from '@/components/LayoutShell';
+import { ReactQueryProvider } from "../../provider/ReactQueryProvider"
 
 export const metadata = {
   title: 'Naraka Face Gallery',
@@ -10,7 +11,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi">
       <body>
-        <LayoutShell>{children}</LayoutShell>
+        <ReactQueryProvider>
+          <LayoutShell>
+            {children}
+          </LayoutShell>
+        </ReactQueryProvider>
       </body>
     </html>
   );

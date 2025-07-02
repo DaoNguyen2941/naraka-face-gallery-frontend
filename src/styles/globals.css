@@ -124,3 +124,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Thu hẹp thanh cuộn (cho trình duyệt WebKit như Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 6px; /* chiều rộng thanh cuộn dọc */
+  height: 6px; /* chiều cao thanh cuộn ngang nếu có */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.5); /* màu thanh cuộn */
+  border-radius: 3px;
+}

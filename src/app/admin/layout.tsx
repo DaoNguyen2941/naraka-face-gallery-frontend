@@ -1,4 +1,4 @@
-import { Providers } from "./providers"
+import { ReactQueryProvider } from "../../provider/ReactQueryProvider"
 import type { Metadata } from "next"
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -12,7 +12,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="bg-black text-white min-h-screen">
-      <Providers>{children}</Providers>
+      <ReactQueryProvider>{children}</ReactQueryProvider>
     </div>
   )
 }

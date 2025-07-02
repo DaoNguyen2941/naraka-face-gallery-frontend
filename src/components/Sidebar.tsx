@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronDown, ChevronRight } from "lucide-react"
 import characters from "@/data/characters.json"
-import categories from "@/data/categories.json"
+import album from "@/data/album.json"
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
@@ -55,9 +55,9 @@ export default function Sidebar({
             <div className="flex flex-col">
               {/* Static items */}
               {[
-                { label: "Trang chủ", path: "/home" },
+                { label: "Home", path: "/home" },
                 { label: "Mới cập nhật", path: "/home?sort=newest" },
-                { label: "Nổi bật", path: "/home?highlighted=true" },
+                { label: "Đầu tóc", path: "/home?sort=newest" },
               ].map((item, i) => (
                 <div key={i}>
                   <div
@@ -73,12 +73,12 @@ export default function Sidebar({
                 </div>
               ))}
 
-              {/* Nhân vật */}
+              {/*  QR-code make up */}
               <div
                 className="px-3 py-2 cursor-pointer hover:bg-gray-700 rounded flex items-center justify-between"
                 onClick={() => setShowCharacters(!showCharacters)}
               >
-                <span>🧩 Nhân vật</span>
+                <span>🧩 QR-code make up</span>
                 {showCharacters ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
               </div>
               <hr className="my-2 border-gray-700" />
@@ -114,12 +114,12 @@ export default function Sidebar({
                 )}
               </AnimatePresence>
 
-              {/* Thể loại */}
+              {/* anbum */}
               <div
                 className="mt-2 px-3 py-2 cursor-pointer hover:bg-gray-700 rounded flex items-center justify-between"
                 onClick={() => setShowCategories(!showCategories)}
               >
-                <span>🧩 Thể loại</span>
+                <span>🧩 anbum</span>
                 {showCategories ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
               </div>
               <hr className="my-2 border-gray-700" />
@@ -132,7 +132,7 @@ export default function Sidebar({
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden flex flex-col gap-1"
                   >
-                    {categories.map((cat) => (
+                    {album.map((cat) => (
                       <div
                         key={cat.id}
                         className="ml-4 px-3 py-1 cursor-pointer hover:bg-gray-700 rounded text-sm"

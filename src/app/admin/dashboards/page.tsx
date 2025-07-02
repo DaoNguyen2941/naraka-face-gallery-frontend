@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Users, ImageIcon, Folder } from "lucide-react"
-
+import StatsChart from "../components/statsChart"
 export default function AdminHome() {
   const stats = {
     characters: 12,
@@ -62,7 +62,7 @@ export default function AdminHome() {
 
       <h2 className="text-lg font-semibold">Truy cập gần đây</h2>
       <p className="text-sm text-muted-foreground">Hiển thị những trang bạn mới vào gần đây.</p>
-
+      <StatsChart />
     </div>
   )
 }

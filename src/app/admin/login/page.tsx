@@ -24,15 +24,10 @@ export default function AdminLogin() {
     resolver: zodResolver(schema)
   })
 
-  const loginMutation = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data: AdminLoginDto) => adminLoginService(data),
-    onSuccess: (data) => {
-      const token = data.token;
-      if (token) {
-        localStorage.setItem("token", token);
-        router.push("/admin/dashboards")
-        //  fetch thông tin user
-      }
+    onSuccess: () => {
+      router.push("/admin/dashboards")
     },
     onError: (error) => {
       console.error("❌ Đăng nhập thất bại:", error);
@@ -40,7 +35,7 @@ export default function AdminLogin() {
   });
 
   const onSubmit: SubmitHandler<AdminLoginDto> = (data) => {
-    loginMutation.mutate(data);
+    mutate(data);
   };
 
   return (
@@ -54,7 +49,12 @@ export default function AdminLogin() {
       <div className="relative z-10 bg-gray-900 p-8 rounded-2xl shadow-lg max-w-md w-full text-white">
         <h2 className="text-3xl font-bold text-center mb-6">Admin Login</h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={(event) => {
+          event.preventDefault();
+          handleSubmit(onSubmit)(event);
+        }}
+          autoComplete="off" 
+          className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1">Tên đăng nhập</label>
             <input
@@ -84,9 +84,9 @@ export default function AdminLogin() {
           <button
             type="submit"
             className="w-full py-2 bg-red-600 hover:bg-red-700 rounded text-white font-semibold transition"
-            disabled={loginMutation.isPending}
+            disabled={isPending}
           >
-            {loginMutation.isPending ? "Đang đăng nhập..." : "Đăng nhập"}
+            {isPending ? "Đang đăng nhập..." : "Đăng nhập"}
           </button>
         </form>
       </div>
