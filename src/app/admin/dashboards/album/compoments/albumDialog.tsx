@@ -15,16 +15,16 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import Image from "next/image"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
-import { createCharacterService, updateCharacterService } from "@/lib/services/admin/characters"
-import { Character } from "@/types/character.type"
+import { createAlbumService, updateAlbumService } from "@/lib/services/admin/album"
+import { Album } from "@/types/album.type"
 import { Loader2 } from "lucide-react"
 import { formDataCharacter } from "@/lib/services/admin/characters"
 
 type Props = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  character: Character | null
-  onSave: (character: Character, isEdit: boolean) => void
+  album: Album | null
+  onSave: (character: Album, isEdit: boolean) => void
 }
 
 const baseSchema = z.object({
@@ -33,12 +33,12 @@ const baseSchema = z.object({
 });
 
 const createSchema = baseSchema.extend({
-  avatarFile: z
-    .instanceof(File, { message: "Ảnh đại diện là bắt buộc" }),
+  coverPhoto: z
+    .instanceof(File, { message: "Ảnh bìa là bắt buộc" }),
 });
 
 const editSchema = baseSchema.extend({
-  avatarFile: z
+  coverPhoto: z
     .instanceof(File)
     .or(z.null())
     .or(z.undefined()),
@@ -47,10 +47,10 @@ const editSchema = baseSchema.extend({
 export default function CharacterDialog({
   open,
   onOpenChange,
-  character,
+  album,
   onSave,
 }: Props) {
-  const isEdit = !!character
+  const isEdit = !!album
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const schema = isEdit ? editSchema : createSchema
@@ -67,41 +67,41 @@ export default function CharacterDialog({
     defaultValues: {
       name: "",
       description: "",
-      avatarFile: undefined,
+      coverPhoto: undefined,
     },
   })
 
-  const avatarFile = watch("avatarFile")
+  const coverPhoto = watch("coverPhoto")
   const previewUrl =
-    avatarFile instanceof File
-      ? URL.createObjectURL(avatarFile)
-      : character?.avatar.url ?? ""
+    coverPhoto instanceof File
+      ? URL.createObjectURL(coverPhoto)
+      : album?.cover_photo.url ?? ""
 
   // Cleanup preview URL to avoid memory leak
   useEffect(() => {
-    if (avatarFile instanceof File) {
-      const objectUrl = URL.createObjectURL(avatarFile)
+    if (coverPhoto instanceof File) {
+      const objectUrl = URL.createObjectURL(coverPhoto)
       return () => URL.revokeObjectURL(objectUrl)
     }
-  }, [avatarFile])
+  }, [coverPhoto])
 
   useEffect(() => {
     if (!open) return;
 
-    if (character) {
+    if (album) {
       reset({
-        name: character.name,
-        description: character.description ?? "",
-        avatarFile: undefined,
+        name: album.name,
+        description: album.description ?? "",
+        coverPhoto: undefined,
       });
     } else {
       reset({
         name: "",
         description: "",
-        avatarFile: undefined,
+        coverPhoto: undefined,
       });
     }
-  }, [character, open, reset]);
+  }, [album, open, reset]);
 
 
   const mutation = useMutation({
@@ -110,23 +110,23 @@ export default function CharacterDialog({
       file?: File
     }) => {
       return isEdit
-        ? updateCharacterService(data, file, character.id)
-        : createCharacterService(data, file!)
+        ? updateAlbumService(data, file, album.id)
+        : createAlbumService(data, file!)
     },
     onSuccess: (newCharacter) => {
-      toast.success(isEdit ? "Cập nhật nhân vật thành công" : "Tạo nhân vật thành công")
+      toast.success(isEdit ? "Cập nhật album thành công" : "Tạo album vật thành công")
       onSave(newCharacter, isEdit)
     },
     onError: () => {
-      toast.error(isEdit ? "Lỗi khi cập nhật nhân vật" : "Lỗi khi tạo nhân vật")
+      toast.error(isEdit ? "Lỗi khi cập nhật album" : "Lỗi khi tạo album")
     },
   })
 
   const onSubmit: SubmitHandler<z.infer<typeof schema>> = (data) => {
-    const file = data.avatarFile as File | undefined
+    const file = data.coverPhoto as File | undefined
 
     if (!file && !isEdit) {
-      toast.error("Vui lòng chọn ảnh đại diện")
+      toast.error("Vui lòng chọn ảnh bìa")
       return
     }
 
@@ -158,11 +158,11 @@ export default function CharacterDialog({
             {previewUrl ? (
               <Image
                 src={previewUrl}
-                alt="Avatar preview"
+                alt="cover photo preview"
                 width={128}
                 height={128}
                 className="object-cover w-full h-full"
-                unoptimized 
+                unoptimized
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-sm text-muted-foreground">
@@ -174,11 +174,11 @@ export default function CharacterDialog({
             type="file"
             accept="image/*"
             ref={fileInputRef}
-            onChange={(e) => setValue("avatarFile", e.target.files?.[0])}
+            onChange={(e) => setValue("coverPhoto", e.target.files?.[0])}
             hidden
           />
-          {errors.avatarFile && (
-            <p className="text-red-500 text-sm">{errors.avatarFile.message}</p>
+          {errors.coverPhoto && (
+            <p className="text-red-500 text-sm">{errors.coverPhoto.message}</p>
           )}
 
           <div>

@@ -57,11 +57,7 @@ export default function AdminHome() {
           </CardContent>
         </Card>
       </div>
-
       <hr className="my-4 border-muted" />
-
-      <h2 className="text-lg font-semibold">Truy cập gần đây</h2>
-      <p className="text-sm text-muted-foreground">Hiển thị những trang bạn mới vào gần đây.</p>
       <StatsChart />
     </div>
   )

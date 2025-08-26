@@ -15,6 +15,8 @@ export default async function DashBoardLayout({ children }: { children: React.Re
   const token = cookieStore.get('Authentication')?.value
 
  if (!token || !isTokenValid(token)) {
+  console.log(token);
+  console.log(isTokenValid(token!));
     redirect('/admin/login')
   }
 

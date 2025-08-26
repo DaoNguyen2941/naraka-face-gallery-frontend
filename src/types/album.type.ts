@@ -1,11 +1,11 @@
 import { File } from "./file.type";
 
-export type Character = {
+export type Album = {
    id: string;
   name: string;
   slug: string;
   description: string;
   createdAt: Date;
   updatedAt: Date;
-  avatar: File
+  cover_photo: File
 };

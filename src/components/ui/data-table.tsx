@@ -26,11 +26,11 @@ interface DataTableProps<TData, TValue> {
   searchKey?: keyof TData
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<Data, TValue>({
   columns,
   data,
   searchKey,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<Data, TValue>) {
   const [filter, setFilter] = useState("")
 
   const table = useReactTable({
@@ -45,7 +45,8 @@ export function DataTable<TData, TValue>({
     },
     onGlobalFilterChange: setFilter,
     globalFilterFn: (row, columnId, filterValue) => {
-      const value = row.getValue(columnId)
+      if (!searchKey) return true
+      const value = row.original[searchKey]
       return String(value).toLowerCase().includes(filterValue.toLowerCase())
     },
   })
@@ -111,6 +112,8 @@ export function DataTable<TData, TValue>({
           <TableHeader className="bg-muted">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
+                {/* Cột STT */}
+                <TableHead>STT</TableHead>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
                     {flexRender(header.column.columnDef.header, header.getContext())}
@@ -119,10 +122,15 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody className="divide-y divide-gray-200">
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
+                  {/* Cell STT */}
+                  <TableCell>
+                    {row.index + 1 + table.getState().pagination.pageIndex * table.getState().pagination.pageSize}
+                  </TableCell>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -132,12 +140,13 @@ export function DataTable<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="text-center py-6">
+                <TableCell colSpan={columns.length + 1} className="text-center py-6">
                   Không có dữ liệu.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
+
         </Table>
       </div>
     </div>

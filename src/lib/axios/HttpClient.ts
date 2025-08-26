@@ -13,7 +13,7 @@ export class HttpClient {
     this.instance = axios.create({
       baseURL: apiRoutes.host,
       withCredentials: true, // gửi cookie trong mọi request
-      timeout: 5000,
+      timeout: 10000,
     })
 
     this.setupInterceptors()
@@ -26,7 +26,13 @@ export class HttpClient {
         const originalRequest = error.config as any
 
         // Nếu không phải lỗi 401 hoặc là login/refresh, thì bỏ qua
-        if (!originalRequest || error.response?.status !== 401 || originalRequest._retry) {
+        if (
+          !originalRequest ||
+          error.response?.status !== 401 ||
+          originalRequest._retry ||
+          originalRequest.url.includes("/auth/login") ||
+          originalRequest.url.includes("/auth/refresh")
+        ) {
           return Promise.reject(error)
         }
 
@@ -43,8 +49,8 @@ export class HttpClient {
         this.isRefreshing = true
 
         try {
-          await this.instance.post("/auth/refresh") // server sẽ set lại cookie access token
-          
+          await this.instance.get(apiRoutes.admin.refresh()) // server sẽ set lại cookie access token
+
           this.failedQueue.forEach(p => p.resolve())
           this.failedQueue = []
 
@@ -52,8 +58,8 @@ export class HttpClient {
         } catch (refreshError) {
           this.failedQueue.forEach(p => p.reject(refreshError))
           this.failedQueue = []
-
           window.location.href = "/admin/login"
+          
           return Promise.reject(refreshError)
         } finally {
           this.isRefreshing = false

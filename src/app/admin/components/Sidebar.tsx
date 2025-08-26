@@ -9,15 +9,23 @@ import {
   ImageIcon,
   Folder,
   LogOut,
+  Tag,
+  History,
+  ArrowDownUp,
+  FileUser,
+  Trash2
 } from 'lucide-react'
 
 const navItems = [
   { label: 'Dashboard', href: '/admin/dashboards', icon: <LayoutDashboard className="w-5 h-5" /> },
   { label: 'Nhân vật', href: '/admin/dashboards/characters', icon: <Users className="w-5 h-5" /> },
-  { label: 'Danh mục mặt', href: '/admin/dashboards/face-categories', icon: <Folder className="w-5 h-5" /> },
   { label: 'Ảnh mặt', href: '/admin/dashboards/face-images', icon: <ImageIcon className="w-5 h-5" /> },
-  { label: 'Tags', href: '/admin/dashboards/tags', icon: <ImageIcon className="w-5 h-5" /> },
-  { label: 'Lịch sủ hoạt động', href: '/admin/dashboards/history', icon: <ImageIcon className="w-5 h-5" /> },
+  { label: 'Tags', href: '/admin/dashboards/tags', icon: <Tag className="w-5 h-5" /> },
+  { label: 'album', href: '/admin/dashboards/album', icon: <Folder className="w-5 h-5" /> },
+  { label: 'Lịch sủ hoạt động', href: '/admin/dashboards/history', icon: <History className="w-5 h-5" /> },
+  { label: 'Lưu lượng truy cập', href: '/admin/dashboards/traffic', icon: <ArrowDownUp className="w-5 h-5" /> },
+  { label: 'Thông tin liên hệ', href: '/admin/dashboards/contact', icon: <FileUser className="w-5 h-5" /> },
+  { label: 'Thùng rác', href: '/admin/dashboards/trash-can', icon: <Trash2 className="w-5 h-5" /> },
 ]
 
 export function Sidebar() {

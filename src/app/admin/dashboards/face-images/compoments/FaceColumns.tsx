@@ -1,32 +1,31 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { Character } from "@/types/character.type"
+import { Tag } from "@/types/tag.type"
 import { Button } from "@/components/ui/button"
 import { Pencil, Trash } from "lucide-react"
-
-export const columns = (
-  onEdit: (character: Character) => void,
+import { Face } from "@/types/face.type"
+export const FaceColumns = (
+  onEdit: (face: Face) => void,
   onDelete: (id: string) => void
-): ColumnDef<Character>[] => [
-    {
-      accessorKey: "avatar",
-      header: "Ảnh",
-      cell: ({ row }) => (
-        <img
-          src={row.original.avatar.url}
-          alt={row.original.name}
-          className="w-10 h-10  object-cover"
-        />
-      ),
-    },
+): ColumnDef<Face>[] => [
     {
       accessorKey: "name",
-      header: "Tên",
-      cell: ({ row }) => row.original.name,
+      header: "Tên thẻ",
+      cell: ({ row }) => row.original.title,
     },
-
+    // {
+    //   accessorKey: "avatar",
+    //   header: "Ảnh",
+    //   cell: ({ row }) => (
+    //     <img
+    //       src={row.original.avatar.url}
+    //       alt={row.original.name}
+    //       className="w-10 h-10  object-cover"
+    //     />
+    //   ),
+    // },
     {
       accessorKey: "description",
-      header: "Mô tả",
+      header: "Mô tả thẻ",
       cell: ({ row }) => row.original.description,
     },
     {

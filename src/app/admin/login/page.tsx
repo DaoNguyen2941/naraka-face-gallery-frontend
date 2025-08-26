@@ -19,6 +19,7 @@ export default function AdminLogin() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm<FormData>({
     resolver: zodResolver(schema)
@@ -29,9 +30,18 @@ export default function AdminLogin() {
     onSuccess: () => {
       router.push("/admin/dashboards")
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error("❌ Đăng nhập thất bại:", error);
-    },
+
+      const message =
+        error?.response?.data?.message ||
+        "Đăng nhập thất bại. Vui lòng thử lại sau.";
+
+      setError("root", {
+        type: "manual",
+        message,
+      });
+    }
   });
 
   const onSubmit: SubmitHandler<AdminLoginDto> = (data) => {
@@ -48,39 +58,40 @@ export default function AdminLogin() {
       <div className="absolute inset-0 bg-black bg-opacity-60" />
       <div className="relative z-10 bg-gray-900 p-8 rounded-2xl shadow-lg max-w-md w-full text-white">
         <h2 className="text-3xl font-bold text-center mb-6">Admin Login</h2>
-
+        {errors.root && (
+          <p className="text-red-500 text-sm mb-2">{errors.root.message}</p>
+        )}
         <form onSubmit={(event) => {
           event.preventDefault();
           handleSubmit(onSubmit)(event);
         }}
-          autoComplete="off" 
+          autoComplete="off"
           className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1">Tên đăng nhập</label>
+            {errors.username && (
+              <p className="text-sm text-red-500 mt-1">{errors.username.message}</p>
+            )}
             <input
               type="text"
               {...register("username")}
               className="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
               placeholder="admin"
             />
-            {errors.username && (
-              <p className="text-sm text-red-500 mt-1">{errors.username.message}</p>
-            )}
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1">Mật khẩu</label>
+            {errors.password && (
+              <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
+            )}
             <input
               type="password"
               {...register("password")}
               className="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
               placeholder="••••••••"
             />
-            {errors.password && (
-              <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
-            )}
           </div>
-
           <button
             type="submit"
             className="w-full py-2 bg-red-600 hover:bg-red-700 rounded text-white font-semibold transition"
