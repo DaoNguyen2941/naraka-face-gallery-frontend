@@ -2,23 +2,25 @@
 
 import { useSearchParams } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
-import { getFaceCodesFromJson } from '@/lib/services/mock.service'
 import FaceGallery from '@/components/FaceGallery'
-
+import { PaginationResponse } from "@/types/page.type"
+import { PublicFace } from '@/types/face/publicFace.type'
+import { useState } from "react"
+import { getFaceService } from '@/lib/services/public/face'
 export default function HomePage() {
   const searchParams = useSearchParams()
   const category = searchParams.get('category')
   const sort = searchParams.get('sort')
   const highlighted = searchParams.get('highlighted')
+  const [page, setPage] = useState<number>(1)
+  const [tagFilter, setTagFilter] = useState<string[]>([])
 
-  const { data: faceCodes, isLoading } = useQuery({
-    queryKey: ['mock-face-codes', { category, sort, highlighted }],
-    queryFn: () =>
-      getFaceCodesFromJson({
-        categoryId: category ?? undefined,
-        sort: sort ?? undefined,
-        highlighted: highlighted === 'true',
-      }),
+  const {
+    data: faces,
+    isLoading: faceLoading,
+  } = useQuery<PaginationResponse<PublicFace>>({
+    queryKey: ["Qr-face", page, tagFilter],
+    queryFn: () => getFaceService({ page: page, tagSlugs: tagFilter, take: 12 }),
   })
 
   return (
@@ -32,7 +34,22 @@ export default function HomePage() {
 
       <h1 className="text-2xl font-bold">QR Face Gallery</h1>
 
-      <FaceGallery faceCodes={faceCodes ?? []} loading={isLoading} />
+      <FaceGallery
+        faceCodes={
+          faces ?? {
+            data: [],
+            meta: {
+              page: 1,
+              take: 10,
+              itemCount: 0,
+              pageCount: 0,
+              hasPreviousPage: false,
+              hasNextPage: false,
+            },
+          }
+        }
+        loading={faceLoading}
+      />
     </div>
   )
 }

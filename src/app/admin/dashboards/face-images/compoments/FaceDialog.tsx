@@ -17,7 +17,7 @@ import Image from "next/image"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
-import { Face } from "@/types/face.type"
+import { Face } from "@/types/face/face.type"
 import { Tag } from "@/types/tag.type"
 import { Character } from "@/types/character.type"
 import {
@@ -345,6 +345,12 @@ export default function FaceDialog({
                   />
                 )}
               />
+              {errors.qrCodeGlobals?.message && (
+                <p className="text-red-500 text-sm">
+                  {String(errors.qrCodeGlobals.message)}
+                </p>
+              )}
+
             </div>
           </div>
 

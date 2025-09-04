@@ -9,10 +9,10 @@ export const apiRoutes = {
     refresh: () => `/admin/auth/refresh`,
     characters: (id?: string) => id ? `/admin/characters/${id}` : `/admin/characters`,
     tag: (id?: string) => id ? `/admin/tag/${id}` : `/admin/tag`,
-    album: (id?:string) => id ? `/admin/category/${id}` : `/admin/category`,
-    face: (id?:string) => id? `/admin/face/${id}` : `/admin/face`,
+    album: (id?: string) => id ? `/admin/category/${id}` : `/admin/category`,
+    face: (id?: string) => id ? `/admin/face/${id}` : `/admin/face`,
   },
   public: {
-
+    face: (slug?: string) => slug ? `/face/${slug}` : `/face`,
   }
 };

@@ -4,12 +4,22 @@ import { Button } from "@/components/ui/button"
 import { PlusCircle } from "lucide-react"
 import FaceDialog from "./FaceDialog"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { getFaceService } from "@/lib/services/admin/face"
+import { adminGetFaceService } from "@/lib/services/admin/face"
 import { DeleteQrFaceService } from "@/lib/services/admin/face"
 import { toast } from "sonner"
 import ConfirmDialog from "@/app/admin/components/ConfirmDialog"
-import { Face } from "@/types/face.type"
+import { Face } from "@/types/face/face.type"
 import { useAdminTags } from "@/app/admin/hooks/useAdminTags"
+import { PaginationResponse } from "@/types/page.type"
+import FaceCardGrid from "./FaceCardGrid"
+import { FaceColumns } from "./FaceColumns"
+import { Input } from "@/components/ui/input"
+import TagFilterDialog from "@/components/TagFilterDialog"
+import {
+    Menu,
+    Search,
+    SlidersHorizontal, // icon lọc
+} from 'lucide-react'
 
 export default function QrFaceTable() {
     const [selected, setSelected] = useState<Face | null>(null)
@@ -18,22 +28,33 @@ export default function QrFaceTable() {
     const [search, setSearch] = useState("")
     const queryClient = useQueryClient()
     const { data: tagList, isLoading: tagsLoading } = useAdminTags()
+    const [page, setPage] = useState<number>(1)
+    const [pageSize, setPageSize] = useState<number>(12)
+    const [showTagFilter, setShowTagFilter] = useState(false)
+    const [tagFilter, setTagFilter] = useState<string[]>([])
 
     const {
-        data: faces = [],
+        data: faces,
         isLoading,
-    } = useQuery<Face[]>({
-        queryKey: ["admin-Qr-face"],
-        queryFn: getFaceService,
+    } = useQuery<PaginationResponse<Face>>({
+        queryKey: ["admin-Qr-face", page, pageSize, tagFilter],
+        queryFn: () => adminGetFaceService({ page: page, take: pageSize, tagSlugs: tagFilter }),
     })
 
     const { mutate, isPending } = useMutation({
         mutationFn: (id: string) => DeleteQrFaceService(id),
-        onSuccess(data, tagId) {
+        onSuccess(data, faceId) {
             toast.success("Đã xóa khuôn mặt thành công!")
-            queryClient.setQueryData<Face[]>(["admin-Qr-face"], (oldData) => {
-                return oldData?.filter((face) => face.id !== tagId) ?? []
-            })
+            queryClient.setQueryData<PaginationResponse<Face>>(
+                ["admin-Qr-face", page, pageSize, tagFilter],
+                (old) => {
+                    if (!old) return old
+                    return {
+                        ...old,
+                        data: old.data.filter((face) => face.id !== faceId),
+                    }
+                }
+            )
         },
         onError: () => {
             toast.error("Có lỗi khi xóa mẫu khuôn mặt")
@@ -46,14 +67,48 @@ export default function QrFaceTable() {
     }
 
     const handleSave = (face: Face, isEdit: boolean) => {
-        queryClient.setQueryData<Face[]>(["admin-Qr-face"], (old) => {
-            if (!old) return [face]
-            return isEdit
-                ? old.map((t) => (t.id === face.id ? face : t))
-                : [face, ...old]
-        })
-        setOpen(false)
-    }
+        queryClient.setQueryData<PaginationResponse<Face> | undefined>(
+            ["admin-Qr-face", page, pageSize, tagFilter],
+            (old) => {
+                if (!old) {
+                    // Trường hợp cache chưa có gì
+                    return {
+                        data: [face],
+                        meta: {
+                            page: 1,
+                            take: pageSize,
+                            itemCount: 1,
+                            pageCount: 1,
+                            hasPreviousPage: false,
+                            hasNextPage: false,
+                        },
+                    } satisfies PaginationResponse<Face>;
+                }
+
+                // Cập nhật khi đã có dữ liệu
+                const newData = isEdit
+                    ? old.data.map((t) => (t.id === face.id ? face : t))
+                    : [face, ...old.data];
+
+                const newItemCount = isEdit ? old.meta.itemCount : old.meta.itemCount + 1;
+                const newPageCount = Math.ceil(newItemCount / old.meta.take);
+
+                return {
+                    ...old,
+                    data: newData,
+                    meta: {
+                        ...old.meta,
+                        itemCount: newItemCount,
+                        pageCount: newPageCount,
+                    },
+                } satisfies PaginationResponse<Face>;
+            }
+        );
+
+        setOpen(false);
+    };
+
+
 
     const handleDelete = (id: string) => {
         setDeleteQrFaceId(id)
@@ -66,66 +121,111 @@ export default function QrFaceTable() {
         }
     }
 
-    const filteredFaces = faces.filter((face) =>
-        face.title.toLowerCase().includes(search.toLowerCase())
-    )
+    const handleNextPage = () => {
+        if (faces?.meta.hasNextPage) {
+            setPage(page + 1)
+        }
+    }
 
+    const handlePreviousPage = () => {
+        if (faces?.meta.hasPreviousPage) {
+            setPage(page - 1)
+        }
+    }
+
+    const handleApplyFilter = (tagSlug: string[]) => {
+        setTagFilter(tagSlug)
+    }
+
+    const filteredFaces = (faces?.data ?? []).filter((face) =>
+        face.title.toLowerCase().includes(search.toLowerCase())
+    );
     return (
         <div className="space-y-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
                 <div className="flex flex-col">
                     <h2 className="text-lg font-semibold">Danh sách QR khuôn mặt</h2>
-                    <input
-                        type="text"
-                        placeholder="Tìm theo tên..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="mt-2 border rounded px-3 py-1 w-64 text-sm"
-                    />
                 </div>
                 <Button onClick={() => { setSelected(null); setOpen(true) }}>
                     <PlusCircle className="w-4 h-4 mr-2" /> Thêm khuôn mặt
                 </Button>
             </div>
 
+            <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+
+                    <Input
+                        type="text"
+                        placeholder="Tìm theo tên..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-95"
+                    />
+
+                    <button
+                        onClick={() => setShowTagFilter(true)}
+                        className="p-2 hover:bg-gray-800 rounded"
+                        title="Lọc theo tag"
+                    >
+                        <SlidersHorizontal className="w-5 h-5" />
+                    </button>
+                </div>
+
+                <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                        <Button
+                            variant="default"
+                            size="sm"
+                            onClick={handlePreviousPage}
+                            disabled={!faces?.meta.hasPreviousPage}
+                        >
+                            Trước
+                        </Button>
+                        <span className="text-sm">
+                            Trang {page} / {faces?.meta.pageCount}
+                        </span>
+                        <Button
+                            variant="default"
+                            size="sm"
+                            onClick={handleNextPage}
+                            disabled={!faces?.meta.hasNextPage}
+                        >
+                            Sau
+                        </Button>
+                    </div>
+
+                    {/* Dropdown chọn pageSize */}
+                    <div className="flex items-center gap-1">
+                        <span className="text-sm">Hiển thị:</span>
+                        <select
+                            className="border rounded px-2 py-1 text-sm"
+                            value={pageSize}
+                            onChange={(e) => {
+                                console.log(e.target.value);
+
+                                setPageSize(Number(e.target.value))
+                                setPage(1)
+                            }}
+                        >
+                            {[12, 24, 48].map((size) => (
+                                <option key={size} value={size}>
+                                    {size}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
             {isLoading ? (
                 <p>Đang tải dữ liệu...</p>
             ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                    {filteredFaces.map((face) => (
-                        <div
-                            key={face.id}
-                            className="border rounded-lg overflow-hidden shadow-sm relative group transition hover:shadow-md"
-                        >
-                            <img
-                                src={face.qrCodeGlobals.url}
-                                alt={face.title}
-                                className="w-full h-40 object-cover"
-                            />
-                            <div className="p-2">
-                                <h3 className="font-medium text-sm truncate">{face.title}</h3>
-                            </div>
-                            <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition">
-                                <Button
-                                    size="icon"
-                                    variant="outline"
-                                    className="text-xs"
-                                    onClick={() => handleEdit(face)}
-                                >
-                                    ✏️
-                                </Button>
-                                <Button
-                                    size="icon"
-                                    variant="destructive"
-                                    className="text-xs"
-                                    onClick={() => handleDelete(face.id)}
-                                >
-                                    🗑️
-                                </Button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                <FaceCardGrid
+                    data={filteredFaces}
+                    onDelete={handleDelete}
+                    onEdit={handleEdit}
+                />
             )}
 
             <FaceDialog
@@ -144,6 +244,14 @@ export default function QrFaceTable() {
                 onConfirm={() => handleConfirmDelete(deleteQrFaceId)}
                 confirmText="Xoá"
                 cancelText="Huỷ"
+            />
+            <TagFilterDialog
+                isOpen={showTagFilter}
+                onClose={() => setShowTagFilter(false)}
+                onApply={(tagSlugs) => {
+                    handleApplyFilter(tagSlugs)
+                }}
+                tags={tagList}
             />
         </div>
     )

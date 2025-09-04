@@ -56,8 +56,9 @@ export default function Sidebar({
               {/* Static items */}
               {[
                 { label: "Home", path: "/home" },
+                { label: "Hot", path: "/home" },
                 { label: "Mới cập nhật", path: "/home?sort=newest" },
-                { label: "Đầu tóc", path: "/home?sort=newest" },
+                // { label: "Đầu tóc", path: "/home?sort=newest" },
               ].map((item, i) => (
                 <div key={i}>
                   <div

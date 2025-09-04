@@ -1,29 +1,27 @@
 import http from "@/lib/axios/HttpClient";
 import { AxiosResponse } from "axios";
 import { apiRoutes } from "@/lib/api/apiRouter";
-import { Face } from "@/types/face.type";
+import { Face } from "@/types/face/face.type";
+import { PaginationResponse } from "@/types/page.type";
+import { ParamGetFace, formDataQrFace, filesData, formDataQrFaceUpdate, defaultFaceParams } from "../interface/face";
 
-export interface formDataQrFace {
-  title: string,
-  description: string,
-  characterId: string,
-  tagIds: string[],
-  source: string
-}
+export const adminGetFaceService = async (
+  params: ParamGetFace = {}
+): Promise<PaginationResponse<Face>> => {
+  const merged = { ...defaultFaceParams, ...params };
+  const { tagSlugs, ...rest } = merged;
 
-export type formDataQrFaceUpdate = Partial<formDataQrFace>
+  const finalParams: Record<string, any> = { ...rest };
+  if (tagSlugs && tagSlugs.length > 0) {
+    finalParams.tagSlugs = tagSlugs.join(','); // gửi dạng tagSlugs=slug1,slug2
+  }
 
+  const response: AxiosResponse = await http.get(apiRoutes.admin.face(), {
+    params: finalParams,
+  });
 
-export interface filesData {
-  imageReviews: File[];
-  qrCodeCN?: File;
-  qrCodeGlobals: File;
-}
-
-export const getFaceService = async (): Promise<Face[]> => {
-  const response: AxiosResponse = await http.get(apiRoutes.admin.face())
-  return response.data
-}
+  return response.data;
+};
 
 export const createQrFaceService = async (
   data: formDataQrFace,

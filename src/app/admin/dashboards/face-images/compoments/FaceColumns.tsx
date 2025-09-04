@@ -1,15 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { Tag } from "@/types/tag.type"
+import { Face } from "@/types/face/face.type"
 import { Button } from "@/components/ui/button"
 import { Pencil, Trash } from "lucide-react"
-import { Face } from "@/types/face.type"
+
 export const FaceColumns = (
-  onEdit: (face: Face) => void,
+  onEdit: (character: Face) => void,
   onDelete: (id: string) => void
 ): ColumnDef<Face>[] => [
     {
-      accessorKey: "name",
-      header: "Tên thẻ",
+      accessorKey: "title",
+      header: "Tên",
       cell: ({ row }) => row.original.title,
     },
     // {
@@ -24,9 +24,9 @@ export const FaceColumns = (
     //   ),
     // },
     {
-      accessorKey: "description",
-      header: "Mô tả thẻ",
-      cell: ({ row }) => row.original.description,
+      accessorKey: "character",
+      header: "Nhân vật",
+      cell: ({ row }) => row.original.character.name,
     },
     {
       id: "actions",

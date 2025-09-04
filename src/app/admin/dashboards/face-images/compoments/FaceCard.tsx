@@ -1,14 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { Face } from "@/types/face.type";
+import { Face } from "@/types/face/face.type";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button"
 
 interface FaceCardProps {
   face: Face;
+  onEdit: (character: Face) => void,
+  onDelete: (id: string) => void
 }
 
-export default function FaceCard({ face }: FaceCardProps) {
+export default function FaceCard({ face, onDelete, onEdit }: FaceCardProps) {
   return (
     <motion.div
       className="relative rounded-xl border bg-white shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group"
@@ -26,6 +29,27 @@ export default function FaceCard({ face }: FaceCardProps) {
           priority={true}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="p-2">
+          <h3 className="font-medium text-sm truncate">{face.title}</h3>
+        </div>
+        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition">
+          <Button
+            size="icon"
+            variant="outline"
+            className="text-xs"
+          onClick={() => onEdit(face)}
+          >
+            ✏️
+          </Button>
+          <Button
+            size="icon"
+            variant="destructive"
+            className="text-xs"
+          onClick={() => onDelete(face.id)}
+          >
+            🗑️
+          </Button>
+        </div>
       </div>
 
       {/* Nội dung */}
@@ -41,24 +65,6 @@ export default function FaceCard({ face }: FaceCardProps) {
             <span className="text-sm font-medium text-gray-600">Nhân vật phù hợp:</span>
             <p className="text-sm font-medium text-gray-600 truncate">{face.character.name}</p>
           </div>
-        </div>
-
-        {/* Nút hành động */}
-        <div className="flex justify-center gap-4 mt-4">
-          <motion.button
-            className="text-blue-600 text-sm font-medium hover:bg-blue-50 px-3 py-1 rounded-md transition-colors duration-200"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Sửa
-          </motion.button>
-          <motion.button
-            className="text-red-500 text-sm font-medium hover:bg-red-50 px-3 py-1 rounded-md transition-colors duration-200"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Xoá
-          </motion.button>
         </div>
       </div>
     </motion.div>

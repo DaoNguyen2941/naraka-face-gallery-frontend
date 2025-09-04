@@ -1,6 +1,6 @@
-import { Character } from "./character.type";
-import { File } from "./file.type";
-import { Tag } from "./tag.type";
+import { Character } from "../character.type";
+import { File } from "../file.type";
+import { Tag } from "../tag.type";
 
 export type Face = {
   id: string;
