@@ -3,20 +3,21 @@
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { getFaceDetailsService } from "@/lib/services/public/face";
+import { getFaceDetailsService } from "@/lib/services/public/face.service";
 import { useMutation } from "@tanstack/react-query";
-import { PublicFaceDetails } from "@/types/face/publicFaceDetails.type";
-// Lightbox
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import { Download } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { downloadQrFileService } from "@/lib/services/public/face.service";
+import { useTrackFaceView } from "../../hooks/track/useTrackFaceView";
 
 export default function FaceDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const [lightboxIndex, setLightboxIndex] = useState<number>(-1);
   const router = useRouter();
+  useTrackFaceView(slug)
 
   const {
     data: faceData,
@@ -25,6 +26,15 @@ export default function FaceDetailPage() {
   } = useMutation({
     mutationFn: (slug: string) => getFaceDetailsService(slug),
   });
+
+  const {
+    mutate: downloadQr,
+    isPending: downloadPending,
+  } = useMutation({
+    mutationFn: ({ urlFile, slug }: { urlFile: string; slug: string }) =>
+      downloadQrFileService(urlFile, slug),
+  });
+
 
   // Fetch mỗi khi slug thay đổi
   useEffect(() => {
@@ -41,16 +51,15 @@ export default function FaceDetailPage() {
     ...(faceData.qrCodeGlobals ? [{ src: faceData.qrCodeGlobals }] : []),
   ];
 
-  const handleDownload = async (url: string, filename: string) => {
-    const response = await fetch(url, { mode: "cors" });
-    const blob = await response.blob();
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownload = async (url: string) => {
+    const value = {
+      urlFile: url,
+      slug: slug
+    }
+    downloadQr(value)
   };
+
+
 
   return (
     <div className="relative min-h-screen w-full bg-[url('https://pub-8f6128da76624084a24e3ae5210c2a86.r2.dev/img/characters/co-thanh-han/avatar.jpg')] bg-cover bg-center bg-no-repeat bg-fixed">
@@ -137,12 +146,12 @@ export default function FaceDetailPage() {
                 </div>
 
                 {/* Nút download */}
-                {/* <button
-                  onClick={() => handleDownload(faceData.qrCodeCN!, `qr-cn-${faceData.title}.png`)}
+                <button
+                  onClick={() => handleDownload(faceData.qrCodeCN!)}
                   className="absolute bottom-2 right-2 bg-black/60 p-2 rounded-full hover:bg-black/80 transition"
                 >
                   <Download className="w-5 h-5 text-white" />
-                </button> */}
+                </button>
               </div>
             )}
 
@@ -165,14 +174,14 @@ export default function FaceDetailPage() {
                 </div>
 
                 {/* Nút download */}
-                {/* <button
+                <button
                   onClick={() =>
-                    handleDownload(faceData.qrCodeGlobals!, `qr-global-${faceData.title}.png`)
+                    handleDownload(faceData.qrCodeGlobals!)
                   }
                   className="absolute bottom-2 right-2 bg-black/60 p-2 rounded-full hover:bg-black/80 transition"
                 >
                   <Download className="w-5 h-5 text-white" />
-                </button> */}
+                </button>
               </div>
             )}
 
@@ -188,14 +197,17 @@ export default function FaceDetailPage() {
               Chúng ta cần tôn trọng tác giả gốc, người đã sáng tạo và chia sẻ.
               Bạn có thể xem tác phẩm nguyên bản tại link ở dưới nếu có!
             </p>
-            <a
-              href="https://ds.163.com/feed/68b40f986eb2dd74f84d1826"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-blue-400 hover:underline mt-1"
-            >
-              nguồn gốc
-            </a>
+            {faceData.source ? (
+              <a
+                href="https://ds.163.com/feed/68b40f986eb2dd74f84d1826"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-blue-400 hover:underline mt-1"
+              >
+                nguồn gốc
+              </a>
+            ) : null}
+
           </div>
 
           {/* Mẹo */}
@@ -203,9 +215,9 @@ export default function FaceDetailPage() {
             <p className="text-blue-400 font-semibold mb-1">Mẹo:</p>
             <p className="text-sm text-gray-200">
               Bạn không biết dùng mã QR để làm đẹp cho nhân vật của mình?{" "}
-              Hãy tới phần{" "}
-              <a href="/huong-dan" className="text-blue-400 hover:underline">
-                hướng dẫn
+              Hãy tới phần hướng dẫn {" "}
+              <a href="/home/faces/instructions" className="text-blue-400 hover:underline">
+                tại đây
               </a>
               !
             </p>

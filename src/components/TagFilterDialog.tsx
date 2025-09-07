@@ -2,7 +2,8 @@
 
 import { X, Search } from 'lucide-react'
 import { useState, useEffect, useMemo } from 'react'
-import { Tag } from '@/types/tag.type'
+import { Tag } from '@/types/tag/tag.type'
+import { PublicTag } from '@/types'
 
 export default function TagFilterDialog({
   isOpen,
@@ -13,7 +14,7 @@ export default function TagFilterDialog({
   isOpen: boolean
   onClose: () => void
   onApply: (selectedSlugs: string[]) => void
-  tags?: Tag[]
+  tags?: Tag[] | PublicTag[]
 }) {
   const [selectedSlugs, setSelectedSlugs] = useState<string[]>([])
   const [searchTerm, setSearchTerm] = useState('')

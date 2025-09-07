@@ -1,4 +1,4 @@
-import { File } from "./file.type";
+import { File } from "@/types";
 
 export type Character = {
    id: string;

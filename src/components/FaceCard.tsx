@@ -13,7 +13,7 @@ export default function FaceCardImage({ face }: FaceCardProps) {
     const router = useRouter()
 
     const handleClick = (slug: string) => {
-        router.push(`home/faces/${slug}`)
+        router.push(`/home/faces/${slug}`)
     }
     return (
         <motion.div

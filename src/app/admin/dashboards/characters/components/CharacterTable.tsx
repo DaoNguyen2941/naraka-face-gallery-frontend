@@ -6,9 +6,9 @@ import { DataTable } from "@/components/ui/data-table"
 import { Button } from "@/components/ui/button"
 import { PlusCircle } from "lucide-react"
 import CharacterDialog from "./CharacterDialog"
-import { Character } from "@/types/character.type"
+import { Character } from "@/types"
 import { useQuery, useMutation } from "@tanstack/react-query"
-import { getCharactersService } from "@/lib/services/admin/characters"
+import { adminGetCharactersService } from "@/lib/services/admin/characters"
 import { useQueryClient } from "@tanstack/react-query"
 import { DeleteCharacterService } from "@/lib/services/admin/characters"
 import { toast } from "sonner"
@@ -26,7 +26,7 @@ export default function CharacterTable() {
     refetch,
   } = useQuery<Character[]>({
     queryKey: ["admin-characters"],
-    queryFn: getCharactersService,
+    queryFn: adminGetCharactersService,
   })
 
   const { mutate, isPending } = useMutation({

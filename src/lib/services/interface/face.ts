@@ -19,12 +19,12 @@ export interface ParamGetFace {
   page?: number;
   take?: number;
   order?: string;
-  tagSlugs?: string[]
+  tagSlugs?: string[];
+  characterSlug?: string;
 }
 
-export const defaultFaceParams: Required<ParamGetFace> = {
+export const defaultFaceParams: ParamGetFace = {
   page: 1,
-  take: 10,
+  take: 12,
   order: "DESC",
-  tagSlugs: [],
 };

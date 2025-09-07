@@ -7,7 +7,7 @@ export interface formDataTag {
     description?: string,
 }
 
-export const getTagsService = async () => {
+export const adminGetTagsService = async () => {
     const response: AxiosResponse = await http.get(apiRoutes.admin.tag())
     return response.data
 }

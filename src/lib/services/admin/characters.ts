@@ -7,7 +7,7 @@ export interface formDataCharacter {
     description: string,
 }
 
-export const getCharactersService = async () => {
+export const adminGetCharactersService = async () => {
     const response: AxiosResponse = await http.get(apiRoutes.admin.characters())
     return response.data
 }

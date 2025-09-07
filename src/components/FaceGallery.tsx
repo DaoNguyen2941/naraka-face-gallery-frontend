@@ -20,15 +20,15 @@ export default function FaceGallery({
   }
 
   if (!faceCodes.data.length) {
-    return <div className="text-white text-center py-10">Không có dữ liệu.</div>
+    return <div className="text-black text-center py-10">Không có dữ liệu.</div>
   }
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
       {faceCodes.data.map((face) => (
         <FaceCardImage
-        key={face.id}
-        face={face}
+          key={face.id}
+          face={face}
         />
       ))}
     </div>

@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { Tag } from "@/types/tag.type"
+import { Tag } from "@/types/tag/tag.type"
 import { Button } from "@/components/ui/button"
 import { Pencil, Trash } from "lucide-react"
 

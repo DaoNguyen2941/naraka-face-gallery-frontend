@@ -3,11 +3,13 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronDown, ChevronRight } from "lucide-react"
-import characters from "@/data/characters.json"
 import album from "@/data/album.json"
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-
+import { getCharacterService } from '@/lib/services/public/character.service'
+import { PublicCharacter } from '@/types'
+import { useQuery } from '@tanstack/react-query'
+import { useGetCharacter } from '@/app/home/hooks/useGetCharacter'
 export default function Sidebar({
   isOpen,
   onClose,
@@ -18,6 +20,13 @@ export default function Sidebar({
   const router = useRouter()
   const [showCharacters, setShowCharacters] = useState(false)
   const [showCategories, setShowCategories] = useState(false)
+  const { data: characters = [], isLoading: charactersLoading } = useGetCharacter()
+
+
+  const handleClick = (slug: string) => {
+    router.push(`/home/faces/character/${slug}`)
+    onClose()
+  }
 
   return (
     <AnimatePresence>
@@ -56,7 +65,7 @@ export default function Sidebar({
               {/* Static items */}
               {[
                 { label: "Home", path: "/home" },
-                { label: "Hot", path: "/home" },
+                { label: "Hot", path: "/home?sort=hot" },
                 { label: "Mới cập nhật", path: "/home?sort=newest" },
                 // { label: "Đầu tóc", path: "/home?sort=newest" },
               ].map((item, i) => (
@@ -68,7 +77,7 @@ export default function Sidebar({
                       onClose()
                     }}
                   >
-                    🧩 {item.label}
+                    {item.label}
                   </div>
                   <hr className="my-2 border-gray-700" />
                 </div>
@@ -90,24 +99,21 @@ export default function Sidebar({
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden flex flex-col gap-1"
+                    className="overflow-y-auto max-h-80 flex flex-col gap-1"
                   >
-                    {characters.map((char) => (
+                    {characters?.map((char) => (
                       <div
                         key={char.id}
                         className="ml-4 px-3 py-1 cursor-pointer hover:bg-gray-700 rounded text-sm flex items-center gap-2"
-                        onClick={() => {
-                          router.push(`/home/characters/${char.id}`)
-                          onClose()
-                        }}
+                        onClick={() => handleClick(char.slug)}
                       >
-                        <Image
+                        {/* <Image
                           src={char.avatar}
                           alt={char.name}
                           width={40}
                           height={40}
                           className="aspect-square object-cover rounded"
-                        />
+                        /> */}
                         <span>{char.name}</span>
                       </div>
                     ))}

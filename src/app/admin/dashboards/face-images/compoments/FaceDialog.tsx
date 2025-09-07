@@ -18,14 +18,12 @@ import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
 import { Face } from "@/types/face/face.type"
-import { Tag } from "@/types/tag.type"
-import { Character } from "@/types/character.type"
+import { Tag } from "@/types"
+import { Character } from "@/types"
+import { formDataQrFace, formDataQrFaceUpdate, filesData, } from "@/lib/services/interface/face"
 import {
   createQrFaceService,
-  formDataQrFace,
-  formDataQrFaceUpdate,
   updateQrFaceService,
-  filesData,
 } from "@/lib/services/admin/face"
 import { useCharacterList } from "@/app/admin/hooks/useAdminCharacterList"
 import type { File as MyFile } from "@/types/file.type"

@@ -14,5 +14,9 @@ export const apiRoutes = {
   },
   public: {
     face: (slug?: string) => slug ? `/face/${slug}` : `/face`,
+    character: (slug?: string) => slug ? `/character/${slug}` : `/character`,
+    tag: (slug?: string) => slug ? `/tag/${slug}` : `/tag`,
+    trackPage:() => `/analytics/pageview`,
+    trackFace: (slug:string) => `/analytics/face/${slug}/view`
   }
 };

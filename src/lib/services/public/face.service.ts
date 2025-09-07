@@ -7,6 +7,24 @@ import { ParamGetFace, formDataQrFace, filesData, formDataQrFaceUpdate, defaultF
 import { PublicFace } from "@/types/face/publicFace.type";
 import { PublicFaceDetails } from "@/types/face/publicFaceDetails.type";
 
+export async function downloadQrFileService(urlFile: string, slug: string) {
+  const urlApi = apiRoutes.public.face(slug) + `/download`;
+
+  const response: AxiosResponse<Blob> = await http.get(urlApi, {
+    params: { urlFile },
+    responseType: "blob", // 👈 bắt buộc để nhận về blob
+  });
+
+  const blob = response.data;
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = slug;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+
 export const getFaceDetailsService = async (slug: string): Promise<PublicFaceDetails> => {
   const response: AxiosResponse = await http.get(apiRoutes.public.face(slug));
   return response.data;

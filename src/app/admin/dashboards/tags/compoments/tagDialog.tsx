@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { createTagService, updateTagService } from "@/lib/services/admin/tag"
-import { Tag } from "@/types/tag.type"
+import { Tag } from "@/types/tag/tag.type"
 import { Loader2 } from "lucide-react"
 import { formDataTag } from "@/lib/services/admin/tag"
 
