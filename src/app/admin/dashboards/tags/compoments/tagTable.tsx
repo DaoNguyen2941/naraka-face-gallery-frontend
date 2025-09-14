@@ -8,26 +8,18 @@ import { PlusCircle } from "lucide-react"
 import TagDialog from "./tagDialog"
 import { Tag } from "@/types/tag/tag.type"
 import { useQuery, useMutation } from "@tanstack/react-query"
-import { getTagsService } from "@/lib/services/admin/tag"
 import { useQueryClient } from "@tanstack/react-query"
 import { deleteTagService } from "@/lib/services/admin/tag"
 import { toast } from "sonner"
 import ConfirmDialog from "@/app/admin/components/ConfirmDialog"
+import { useAdminTags } from "@/app/admin/hooks/useAdminTags"
 
 export default function TagTable() {
     const [selected, setSelected] = useState<Tag | null>(null)
     const [open, setOpen] = useState(false)
     const queryClient = useQueryClient()
     const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null)
-
-    const {
-        data: tags = [],
-        isLoading,
-        refetch,
-    } = useQuery<Tag[]>({
-        queryKey: ["admin-tags"],
-        queryFn: getTagsService,
-    })
+    const { data: tags = [], isLoading } = useAdminTags()
 
     const { mutate, isPending } = useMutation({
         mutationFn: (id: string) => deleteTagService(id),
@@ -74,9 +66,9 @@ export default function TagTable() {
     return (
         <div className="space-y-4">
             <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold">Danh sách nhân vật</h2>
+                <h2 className="text-lg font-semibold">Danh sách thẻ</h2>
                 <Button onClick={() => { setSelected(null); setOpen(true) }}>
-                    <PlusCircle className="w-4 h-4 mr-2" /> Thêm nhân vật
+                    <PlusCircle className="w-4 h-4 mr-2" /> Thêm thẻ
                 </Button>
             </div>
             <DataTable

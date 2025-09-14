@@ -8,13 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {
+import { 
   flexRender,
   getCoreRowModel,
   useReactTable,
   ColumnDef,
   getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
 } from "@tanstack/react-table"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -38,6 +39,7 @@ export function DataTable<Data, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     autoResetPageIndex: false,
     state: {
@@ -104,7 +106,6 @@ export function DataTable<Data, TValue>({
             </select>
           </div>
         </div>
-
       </div>
 
       <div>
@@ -127,9 +128,9 @@ export function DataTable<Data, TValue>({
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
-                  {/* Cell STT */}
+                  {/* Cell STT tuyệt đối */}
                   <TableCell>
-                    {row.index + 1 + table.getState().pagination.pageIndex * table.getState().pagination.pageSize}
+                    {table.getSortedRowModel().rows.findIndex(r => r.id === row.id) + 1}
                   </TableCell>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -146,7 +147,6 @@ export function DataTable<Data, TValue>({
               </TableRow>
             )}
           </TableBody>
-
         </Table>
       </div>
     </div>

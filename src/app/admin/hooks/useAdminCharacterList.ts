@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { adminGetCharactersService } from '@/lib/services/admin/characters'
 
-export const useCharacterList = () => {
+export const useAdminCharacterList = () => {
   return useQuery({
     queryKey: ['admin-characters'],
     queryFn: adminGetCharactersService,
-    staleTime: 15 * 60 * 1000, // 15 phút cache
+    staleTime: 60 * 60 * 1000, // 60 phút cache
     refetchOnWindowFocus: false,
   })
 }

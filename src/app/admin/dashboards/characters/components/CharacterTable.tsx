@@ -13,21 +13,14 @@ import { useQueryClient } from "@tanstack/react-query"
 import { DeleteCharacterService } from "@/lib/services/admin/characters"
 import { toast } from "sonner"
 import ConfirmDialog from "@/app/admin/components/ConfirmDialog"
+import { useAdminCharacterList } from "@/app/admin/hooks/useAdminCharacterList"
 
 export default function CharacterTable() {
   const [selected, setSelected] = useState<Character | null>(null)
   const [open, setOpen] = useState(false)
   const queryClient = useQueryClient()
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null)
-
-  const {
-    data: characters = [],
-    isLoading,
-    refetch,
-  } = useQuery<Character[]>({
-    queryKey: ["admin-characters"],
-    queryFn: adminGetCharactersService,
-  })
+  const { data: characters = [], isLoading: charactersLoading } = useAdminCharacterList()
 
   const { mutate, isPending } = useMutation({
     mutationFn: (id: string) => DeleteCharacterService(id),

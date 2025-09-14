@@ -12,7 +12,7 @@ import { Face } from "@/types/face/face.type"
 import { useAdminTags } from "@/app/admin/hooks/useAdminTags"
 import { PaginationResponse } from "@/types/page.type"
 import FaceCardGrid from "./FaceCardGrid"
-import { FaceColumns } from "./FaceColumns"
+import { useAdminFaces } from "@/app/admin/hooks/useAdminFaces"
 import { Input } from "@/components/ui/input"
 import TagFilterDialog from "@/components/TagFilterDialog"
 import {
@@ -32,14 +32,7 @@ export default function QrFaceTable() {
     const [pageSize, setPageSize] = useState<number>(12)
     const [showTagFilter, setShowTagFilter] = useState(false)
     const [tagFilter, setTagFilter] = useState<string[]>([])
-
-    const {
-        data: faces,
-        isLoading,
-    } = useQuery<PaginationResponse<Face>>({
-        queryKey: ["admin-Qr-face", page, pageSize, tagFilter],
-        queryFn: () => adminGetFaceService({ page: page, take: pageSize, tagSlugs: tagFilter }),
-    })
+    const { data: faces, isLoading } = useAdminFaces({page,pageSize,tagFilter});
 
     const { mutate, isPending } = useMutation({
         mutationFn: (id: string) => DeleteQrFaceService(id),

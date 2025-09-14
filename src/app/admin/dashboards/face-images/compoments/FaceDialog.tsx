@@ -25,10 +25,11 @@ import {
   createQrFaceService,
   updateQrFaceService,
 } from "@/lib/services/admin/face"
-import { useCharacterList } from "@/app/admin/hooks/useAdminCharacterList"
+import { useAdminCharacterList } from "@/app/admin/hooks/useAdminCharacterList"
 import type { File as MyFile } from "@/types/file.type"
 import { getChangedFields } from "@/lib/utils/getChangedFields"
 import { AxiosError } from "axios"
+
 type Props = {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -76,9 +77,7 @@ export default function FaceDialog({
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const cnInputRef = useRef<HTMLInputElement | null>(null)
   const globalInputRef = useRef<HTMLInputElement | null>(null)
-
-  const { data: characters = [], isLoading: charactersLoading } = useCharacterList()
-
+  const { data: characters = [], isLoading: charactersLoading } = useAdminCharacterList()
   const schema = isEdit ? editSchema : createSchema
 
   const {

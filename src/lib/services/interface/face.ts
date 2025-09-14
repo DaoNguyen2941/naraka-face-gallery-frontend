@@ -15,12 +15,18 @@ export interface filesData {
   qrCodeGlobals: File;
 }
 
+export enum FaceSort {
+  NEW = "new",
+  HOT = "hot",
+}
 export interface ParamGetFace {
   page?: number;
   take?: number;
   order?: string;
   tagSlugs?: string[];
   characterSlug?: string;
+  sort?: FaceSort
+  search?: string
 }
 
 export const defaultFaceParams: ParamGetFace = {

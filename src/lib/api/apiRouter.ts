@@ -1,5 +1,3 @@
-// lib/api/apiRouter.ts
-
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export const apiRoutes = {
@@ -11,12 +9,16 @@ export const apiRoutes = {
     tag: (id?: string) => id ? `/admin/tag/${id}` : `/admin/tag`,
     album: (id?: string) => id ? `/admin/category/${id}` : `/admin/category`,
     face: (id?: string) => id ? `/admin/face/${id}` : `/admin/face`,
+    analytics: {
+      dailyTrafficAnalysis: () => `/admin/analytics/daily`,
+      pageTrafficAnalysis: () => `/admin/analytics/page`,
+    },
   },
   public: {
     face: (slug?: string) => slug ? `/face/${slug}` : `/face`,
     character: (slug?: string) => slug ? `/character/${slug}` : `/character`,
     tag: (slug?: string) => slug ? `/tag/${slug}` : `/tag`,
-    trackPage:() => `/analytics/pageview`,
-    trackFace: (slug:string) => `/analytics/face/${slug}/view`
+    trackPage: () => `/analytics/pageview`,
+    trackFace: (slug: string) => `/analytics/face/${slug}/view`
   }
 };

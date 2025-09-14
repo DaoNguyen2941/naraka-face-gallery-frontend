@@ -5,4 +5,5 @@ export type PublicFace = {
   slug: string;
   character: string;
   imageReviews: string;
+  views: number
 };

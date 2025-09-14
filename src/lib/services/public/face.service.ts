@@ -34,11 +34,15 @@ export const getFaceService = async (
   params: ParamGetFace = {}
 ): Promise<PaginationResponse<PublicFace>> => {
   const merged = { ...defaultFaceParams, ...params };
-  const { tagSlugs, ...rest } = merged;
+  const { tagSlugs, sort,...rest } = merged;
 
   const finalParams: Record<string, any> = { ...rest };
   if (tagSlugs && tagSlugs.length > 0) {
     finalParams.tagSlugs = tagSlugs.join(','); // gửi dạng tagSlugs=slug1,slug2
+  }
+
+  if (sort) {
+    finalParams.sort = sort
   }
 
   const response: AxiosResponse = await http.get(apiRoutes.public.face(), {

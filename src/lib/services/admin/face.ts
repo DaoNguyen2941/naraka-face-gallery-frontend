@@ -10,16 +10,13 @@ export const adminGetFaceService = async (
 ): Promise<PaginationResponse<Face>> => {
   const merged = { ...defaultFaceParams, ...params };
   const { tagSlugs, ...rest } = merged;
-
   const finalParams: Record<string, any> = { ...rest };
   if (tagSlugs && tagSlugs.length > 0) {
     finalParams.tagSlugs = tagSlugs.join(','); // gửi dạng tagSlugs=slug1,slug2
   }
-
   const response: AxiosResponse = await http.get(apiRoutes.admin.face(), {
     params: finalParams,
   });
-
   return response.data;
 };
 
@@ -28,26 +25,20 @@ export const createQrFaceService = async (
   files: filesData
 ) => {
   const formData = new FormData();
-
   formData.append("title", data.title);
   formData.append("characterId", data.characterId);
   formData.append("description", data.description);
   formData.append("source", data.source)
-
   formData.append("tagIds", JSON.stringify(data.tagIds || []));
-
   files.imageReviews?.forEach((file) => {
     formData.append("imageReviews", file); // append từng file một
   });
-
   if (files.qrCodeCN) {
     formData.append("qrCodeCN", files.qrCodeCN);
   }
-
   if (files.qrCodeGlobals) {
     formData.append("qrCodeGlobals", files.qrCodeGlobals);
   }
-
   const response: AxiosResponse = await http.post(apiRoutes.admin.face(), formData, {
     headers: {
       "Content-Type": "multipart/form-data",

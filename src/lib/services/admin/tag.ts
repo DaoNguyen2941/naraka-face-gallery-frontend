@@ -17,12 +17,8 @@ export const createTagService = async (data: formDataTag) => {
     return response.data
 }
 
-export const updateTagService = async (data: formDataTag, id: string) => {
-    console.log(data);
-    
-    const response: AxiosResponse = await http.put(apiRoutes.admin.tag(id), data)
-    console.log(response);
-    
+export const updateTagService = async (data: formDataTag, id: string) => {    
+    const response: AxiosResponse = await http.put(apiRoutes.admin.tag(id), data)    
     return response.data
 }
 

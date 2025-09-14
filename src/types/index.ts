@@ -6,3 +6,4 @@ export * from './tag/tag.type';
 export * from './face';
 export * from './character';
 export * from './tag'
+export * from './analytics'

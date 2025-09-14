@@ -1,13 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import Image from 'next/image'
-import { Dialog } from '@headlessui/react'
-import { X } from 'lucide-react'
 import { PaginationResponse } from "@/types/page.type"
 import { PublicFace } from '@/types/face/publicFace.type'
 import FaceCardImage from './FaceCard'
-
+import { LoadingSpinner } from "./ui/LoadingSpinner"
 export default function FaceGallery({
   faceCodes,
   loading,
@@ -16,7 +12,11 @@ export default function FaceGallery({
   loading: boolean
 }) {
   if (loading) {
-    return <div className="text-white text-center py-10">Đang tải...</div>
+    return (
+      <div className="flex justify-center py-4">
+        <LoadingSpinner />
+      </div>
+    )
   }
 
   if (!faceCodes.data.length) {
@@ -24,7 +24,7 @@ export default function FaceGallery({
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
       {faceCodes.data.map((face) => (
         <FaceCardImage
           key={face.id}

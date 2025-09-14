@@ -66,7 +66,7 @@ export default function Sidebar({
               {[
                 { label: "Home", path: "/home" },
                 { label: "Hot", path: "/home?sort=hot" },
-                { label: "Mới cập nhật", path: "/home?sort=newest" },
+                { label: "Mới cập nhật", path: "/home?sort=new" },
                 // { label: "Đầu tóc", path: "/home?sort=newest" },
               ].map((item, i) => (
                 <div key={i}>
@@ -88,7 +88,7 @@ export default function Sidebar({
                 className="px-3 py-2 cursor-pointer hover:bg-gray-700 rounded flex items-center justify-between"
                 onClick={() => setShowCharacters(!showCharacters)}
               >
-                <span>🧩 QR-code make up</span>
+                <span>Nhân vật</span>
                 {showCharacters ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
               </div>
               <hr className="my-2 border-gray-700" />
@@ -122,14 +122,14 @@ export default function Sidebar({
               </AnimatePresence>
 
               {/* anbum */}
-              <div
+              {/* <div
                 className="mt-2 px-3 py-2 cursor-pointer hover:bg-gray-700 rounded flex items-center justify-between"
                 onClick={() => setShowCategories(!showCategories)}
               >
-                <span>🧩 anbum</span>
+                <span>anbum</span>
                 {showCategories ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
               </div>
-              <hr className="my-2 border-gray-700" />
+              <hr className="my-2 border-gray-700" /> */}
 
               <AnimatePresence>
                 {showCategories && (
