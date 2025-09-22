@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError, AxiosResponse } from "axios"
-import { apiRoutes } from "../api/apiRouter"
+import { apiRoutes } from "../constants/apiRouter"
 
 export class HttpClient {
   instance: AxiosInstance

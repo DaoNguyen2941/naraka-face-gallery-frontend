@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { PageColumns } from "./pageColumn"
+import { PageColumns } from "./PageColumn"
 import { DataTable } from "@/components/ui/data-table"
 import { Button } from "@/components/ui/button"
 import { PlusCircle } from "lucide-react"

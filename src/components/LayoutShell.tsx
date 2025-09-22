@@ -4,9 +4,10 @@ import { useState } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import TagFilterDialog from './TagFilterDialog';
-import { useGetTag } from '@/app/home/hooks/useGetTag';
+import { useGetTag } from '@/app/(public)/hooks/useGetTag';
 import { useRouter } from 'next/navigation'
-import { useTrackPageView } from '@/app/home/hooks/track/useTrackPageView';
+import { useTrackPageView } from '@/app/(public)/hooks/track/useTrackPageView';
+
 import Footer from './Footer';
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
   const [showSidebar, setShowSidebar] = useState(false)
@@ -17,8 +18,8 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
 
   const handleApply = (tags: string[]) => {
     tags.length ?
-      router.push(`/home?tags=${tags}`) :
-      router.push(`/home`)
+      router.push(`/?tags=${tags}`) :
+      router.push(`/`)
   }
 
   return (

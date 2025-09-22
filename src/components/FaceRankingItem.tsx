@@ -9,18 +9,29 @@ interface FaceRankingItemProps {
 export default function FaceRankingItem({ face, rank, onClick }: FaceRankingItemProps) {
   return (
     <div
-      className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer"
+      className="group flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer"
       onClick={() => onClick?.(face.slug)}
     >
-      <span className="w-6 text-center text-sm font-bold text-red-500">{rank}</span>
+      {/* Rank */}
+      <span className="w-8 text-center text-base font-bold text-red-500">
+        {rank}
+      </span>
+
+      {/* Thumbnail */}
       <img
         src={face.imageReviews}
         alt={face.title}
-        className="w-12 h-12 rounded-md object-cover"
+        className="w-12 h-12 rounded-md object-cover flex-shrink-0"
       />
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium truncate">{face.title}</p>
-        <p className="text-xs text-gray-500">{face.views} lượt xem</p>
+
+      {/* Nội dung */}
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-medium truncate group-hover:text-black">
+          {face.title}
+        </p>
+        <p className="text-[11px] text-gray-500 truncate">
+          {face.views} lượt xem
+        </p>
       </div>
     </div>
   )

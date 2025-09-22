@@ -1,6 +1,6 @@
 import http from "@/lib/axios/HttpClient";
 import { AxiosResponse } from "axios";
-import { apiRoutes } from "@/lib/api/apiRouter";
+import { apiRoutes } from "@/lib/constants/apiRouter";
 import { Face } from "@/types/face/face.type";
 import { PaginationResponse } from "@/types/page.type";
 import { ParamGetFace, formDataQrFace, filesData, formDataQrFaceUpdate, defaultFaceParams } from "../interface/face";

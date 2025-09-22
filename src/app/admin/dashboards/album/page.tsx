@@ -1,4 +1,4 @@
-import AlbumTable from "./compoments/albumTable"
+import AlbumTable from "./compoments/AlbumTable"
 export default function CharacterManagementPage() {
   return (
     <div className="space-y-4">

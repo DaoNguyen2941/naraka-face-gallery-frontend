@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { albumColumns } from "./albumColumn"
+import { albumColumns } from "./AlbumColumn"
 import { DataTable } from "@/components/ui/data-table"
 import { Button } from "@/components/ui/button"
 import { PlusCircle } from "lucide-react"
-import AlbumDialog from "./albumDialog"
+import AlbumDialog from "./AlbumDialog"
 import { Album } from "@/types/album.type"
 import { useQuery, useMutation } from "@tanstack/react-query"
 import { getAlbumsService } from "@/lib/services/admin/album"

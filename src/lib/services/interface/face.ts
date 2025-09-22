@@ -19,6 +19,10 @@ export enum FaceSort {
   NEW = "new",
   HOT = "hot",
 }
+
+export type FaceSortOption = FaceSort | undefined;
+
+
 export interface ParamGetFace {
   page?: number;
   take?: number;

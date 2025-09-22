@@ -18,7 +18,7 @@ export default function Header({
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (!searchValue.trim()) return
-    router.push(`/home?search=${encodeURIComponent(searchValue)}`)
+    router.push(`/?search=${encodeURIComponent(searchValue)}`)
   }
 
   return (

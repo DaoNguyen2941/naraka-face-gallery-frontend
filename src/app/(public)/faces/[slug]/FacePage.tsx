@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { downloadQrFileService } from "@/lib/services/public/face.service";
 import { useTrackFaceView } from "../../hooks/track/useTrackFaceView";
+import { ROUTES } from "@/lib/constants/routes";
 
 export default function FaceDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -216,7 +217,7 @@ export default function FaceDetailPage() {
             <p className="text-sm text-gray-200">
               Bạn không biết dùng mã QR để làm đẹp cho nhân vật của mình?{" "}
               Hãy tới phần hướng dẫn {" "}
-              <a href="/home/faces/instructions" className="text-blue-400 hover:underline">
+              <a href={ROUTES.public.instruction} className="text-blue-400 hover:underline">
                 tại đây
               </a>
               !

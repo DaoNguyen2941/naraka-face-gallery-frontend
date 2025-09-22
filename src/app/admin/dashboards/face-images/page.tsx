@@ -1,6 +1,4 @@
-import FaceCardGrid from "./compoments/FaceCardGrid";
 import QrFaceTable from "./compoments/QrFacetable";
-
 export default function FaceManagementPage() {
 
   return (

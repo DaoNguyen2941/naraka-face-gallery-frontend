@@ -15,6 +15,8 @@ import FaceCardGrid from "./FaceCardGrid"
 import { useAdminFaces } from "@/app/admin/hooks/useAdminFaces"
 import { Input } from "@/components/ui/input"
 import TagFilterDialog from "@/components/TagFilterDialog"
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner"
+
 import {
     Menu,
     Search,
@@ -32,7 +34,7 @@ export default function QrFaceTable() {
     const [pageSize, setPageSize] = useState<number>(12)
     const [showTagFilter, setShowTagFilter] = useState(false)
     const [tagFilter, setTagFilter] = useState<string[]>([])
-    const { data: faces, isLoading } = useAdminFaces({page,pageSize,tagFilter});
+    const { data: faces, isLoading } = useAdminFaces({ page, pageSize, tagFilter });
 
     const { mutate, isPending } = useMutation({
         mutationFn: (id: string) => DeleteQrFaceService(id),
@@ -212,7 +214,9 @@ export default function QrFaceTable() {
             </div>
 
             {isLoading ? (
-                <p>Đang tải dữ liệu...</p>
+                <div className="flex justify-center items-center py-10">
+                    <LoadingSpinner className="h-8 w-8 text-orange-500" />
+                </div>
             ) : (
                 <FaceCardGrid
                     data={filteredFaces}

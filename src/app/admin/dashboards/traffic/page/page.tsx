@@ -1,4 +1,4 @@
-import PageTable from "./compoments/listPageTable"
+import PageTable from "./compoments/ListPageTable"
 
 export default function CharacterManagementPage() {
   return (

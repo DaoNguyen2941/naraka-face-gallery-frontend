@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { TagColumns } from "./tagColumn"
+import { TagColumns } from "./TagColumn"
 import { DataTable } from "@/components/ui/data-table"
 import { Button } from "@/components/ui/button"
 import { PlusCircle } from "lucide-react"
-import TagDialog from "./tagDialog"
+import TagDialog from "./TagDialog"
 import { Tag } from "@/types/tag/tag.type"
 import { useQuery, useMutation } from "@tanstack/react-query"
 import { useQueryClient } from "@tanstack/react-query"
@@ -13,6 +13,7 @@ import { deleteTagService } from "@/lib/services/admin/tag"
 import { toast } from "sonner"
 import ConfirmDialog from "@/app/admin/components/ConfirmDialog"
 import { useAdminTags } from "@/app/admin/hooks/useAdminTags"
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner"
 
 export default function TagTable() {
     const [selected, setSelected] = useState<Tag | null>(null)
@@ -71,11 +72,18 @@ export default function TagTable() {
                     <PlusCircle className="w-4 h-4 mr-2" /> Thêm thẻ
                 </Button>
             </div>
-            <DataTable
-                columns={TagColumns(handleEdit, handleDelete)}
-                data={tags}
-                searchKey="name"
-            />
+            {isLoading ? (
+                <div className="flex justify-center items-center py-10">
+                    <LoadingSpinner className="h-8 w-8 text-orange-500" />
+                </div>
+            ) : (
+                <DataTable
+                    columns={TagColumns(handleEdit, handleDelete)}
+                    data={tags}
+                    searchKey="name"
+                />
+            )}
+
             <TagDialog
                 open={open}
                 onOpenChange={setOpen}

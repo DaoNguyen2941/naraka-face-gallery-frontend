@@ -4,6 +4,7 @@ import Image from "next/image";
 import { PublicFace } from "@/types/face/publicFace.type";
 import { motion } from "framer-motion";
 import { useRouter } from 'next/navigation'
+import { buildFaceDetailUrl } from "@/lib/constants/routes";
 
 interface FaceCardProps {
     face: PublicFace;
@@ -13,7 +14,8 @@ export default function FaceCardImage({ face }: FaceCardProps) {
     const router = useRouter()
 
     const handleClick = (slug: string) => {
-        router.push(`/home/faces/${slug}`)
+    router.push(buildFaceDetailUrl(slug))
+
     }
     return (
         <motion.div

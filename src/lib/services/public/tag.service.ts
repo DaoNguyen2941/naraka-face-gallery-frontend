@@ -1,6 +1,6 @@
 import http from "@/lib/axios/HttpClient";
 import { AxiosResponse } from "axios";
-import { apiRoutes } from "@/lib/api/apiRouter";
+import { apiRoutes } from "@/lib/constants/apiRouter";
 import { PublicTag } from "@/types";
 
 export const getTagService = async (): Promise<PublicTag[]> => {

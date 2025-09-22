@@ -5,11 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronDown, ChevronRight } from "lucide-react"
 import album from "@/data/album.json"
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
-import { getCharacterService } from '@/lib/services/public/character.service'
-import { PublicCharacter } from '@/types'
-import { useQuery } from '@tanstack/react-query'
-import { useGetCharacter } from '@/app/home/hooks/useGetCharacter'
+import { useGetCharacter } from '@/app/(public)/hooks/useGetCharacter'
+import { ROUTES } from '@/lib/constants/routes'
+import { menuSidebar } from '@/lib/constants/routes'
+import { buildCharacterDetailUrl } from '@/lib/constants/routes'
 export default function Sidebar({
   isOpen,
   onClose,
@@ -22,9 +21,8 @@ export default function Sidebar({
   const [showCategories, setShowCategories] = useState(false)
   const { data: characters = [], isLoading: charactersLoading } = useGetCharacter()
 
-
   const handleClick = (slug: string) => {
-    router.push(`/home/faces/character/${slug}`)
+    router.push(buildCharacterDetailUrl(slug))
     onClose()
   }
 
@@ -63,12 +61,7 @@ export default function Sidebar({
 
             <div className="flex flex-col">
               {/* Static items */}
-              {[
-                { label: "Home", path: "/home" },
-                { label: "Hot", path: "/home?sort=hot" },
-                { label: "Mới cập nhật", path: "/home?sort=new" },
-                // { label: "Đầu tóc", path: "/home?sort=newest" },
-              ].map((item, i) => (
+              {menuSidebar.map((item, i) => (
                 <div key={i}>
                   <div
                     className="px-3 py-2 cursor-pointer hover:bg-gray-700 rounded"
@@ -107,13 +100,6 @@ export default function Sidebar({
                         className="ml-4 px-3 py-1 cursor-pointer hover:bg-gray-700 rounded text-sm flex items-center gap-2"
                         onClick={() => handleClick(char.slug)}
                       >
-                        {/* <Image
-                          src={char.avatar}
-                          alt={char.name}
-                          width={40}
-                          height={40}
-                          className="aspect-square object-cover rounded"
-                        /> */}
                         <span>{char.name}</span>
                       </div>
                     ))}

@@ -1,6 +1,3 @@
-"use client"
-
-import { Users, ImageIcon, Folder } from "lucide-react"
 import StatsCharts from "../../../components/statsChart"
 
 export default function AdminHome() {

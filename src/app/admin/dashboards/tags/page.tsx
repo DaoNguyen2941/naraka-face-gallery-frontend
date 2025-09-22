@@ -1,4 +1,4 @@
-import TagTable from "./compoments/tagTable"
+import TagTable from "./compoments/TagTable"
 
 export default function CharacterManagementPage() {
   return (
