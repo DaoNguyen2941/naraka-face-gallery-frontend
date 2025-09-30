@@ -8,7 +8,6 @@ import {
   Users,
   ImageIcon,
   Folder,
-  LogOut,
   Tag,
   History,
   ArrowDownUp,
@@ -18,24 +17,25 @@ import {
   ChevronRight,
 } from 'lucide-react'
 import { useState } from 'react'
+import { ROUTES } from "@/lib/constants/routes";
 
 const navItems = [
-  { label: 'Dashboard', href: '/admin/dashboards', icon: <LayoutDashboard className="w-5 h-5" /> },
-  { label: 'Nhân vật', href: '/admin/dashboards/characters', icon: <Users className="w-5 h-5" /> },
-  { label: 'Ảnh mặt', href: '/admin/dashboards/face-images', icon: <ImageIcon className="w-5 h-5" /> },
-  { label: 'Tags', href: '/admin/dashboards/tags', icon: <Tag className="w-5 h-5" /> },
-  { label: 'Album', href: '/admin/dashboards/album', icon: <Folder className="w-5 h-5" /> },
-  { label: 'Lịch sử hoạt động', href: '/admin/dashboards/history', icon: <History className="w-5 h-5" /> },
+  { label: 'Dashboard', href: ROUTES.admin.dashboards, icon: <LayoutDashboard className="w-5 h-5" /> },
+  { label: 'Nhân vật', href: ROUTES.admin.characters, icon: <Users className="w-5 h-5" /> },
+  { label: 'Ảnh mặt', href: ROUTES.admin.faces, icon: <ImageIcon className="w-5 h-5" /> },
+  { label: 'Tags', href: ROUTES.admin.tags, icon: <Tag className="w-5 h-5" /> },
+  { label: 'Album', href: ROUTES.admin.album, icon: <Folder className="w-5 h-5" /> },
+  { label: 'Lịch sử hoạt động', href: ROUTES.admin.history, icon: <History className="w-5 h-5" /> },
   {
     label: 'Lưu lượng truy cập',
     icon: <ArrowDownUp className="w-5 h-5" />,
     children: [
-      { label: 'Theo ngày', href: '/admin/dashboards/traffic/daily' },
-      { label: 'Theo page', href: '/admin/dashboards/traffic/page' },
+      { label: 'Theo ngày', href: ROUTES.admin.traffic.daily },
+      { label: 'Theo page', href: ROUTES.admin.traffic.page },
     ],
   },
-  { label: 'Thông tin liên hệ', href: '/admin/dashboards/contact', icon: <FileUser className="w-5 h-5" /> },
-  { label: 'Thùng rác', href: '/admin/dashboards/trash-can', icon: <Trash2 className="w-5 h-5" /> },
+  { label: 'Thông tin liên hệ', href:  ROUTES.admin.contact, icon: <FileUser className="w-5 h-5" /> },
+  { label: 'Thùng rác', href:  ROUTES.admin.trashCan, icon: <Trash2 className="w-5 h-5" /> },
 ]
 
 export function Sidebar() {
@@ -104,12 +104,15 @@ export function Sidebar() {
           )
         )}
       </nav>
-      <div className="p-4 border-t border-zinc-800">
-        <button className="w-full text-left flex items-center gap-2 text-red-500 hover:underline">
+      {/* <div className="p-4 border-t border-zinc-800">
+        <Link
+          href="/admin/login"
+          className="flex items-center gap-2 text-red-500 hover:underline"
+        >
           <LogOut className="w-4 h-4" />
           Đăng xuất
-        </button>
-      </div>
+        </Link>
+      </div> */}
     </aside>
   )
 }

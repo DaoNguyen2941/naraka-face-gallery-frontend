@@ -160,7 +160,7 @@ export default function QrFaceTable() {
                     <button
                         onClick={() => setShowTagFilter(true)}
                         className="p-2 hover:bg-gray-800 rounded"
-                        title="Lọc theo tag"
+                        title="Lọc theo nhãn"
                     >
                         <SlidersHorizontal className="w-5 h-5" />
                     </button>

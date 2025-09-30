@@ -11,8 +11,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="bg-black text-white min-h-screen">
-      <ReactQueryProvider>{children}</ReactQueryProvider>
-      <Toaster />
+      {children}
     </div>
   )
 }

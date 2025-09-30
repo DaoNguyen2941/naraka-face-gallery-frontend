@@ -4,11 +4,10 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronDown, ChevronRight } from "lucide-react"
 import album from "@/data/album.json"
-import { useRouter } from 'next/navigation'
 import { useGetCharacter } from '@/app/(public)/hooks/useGetCharacter'
-import { ROUTES } from '@/lib/constants/routes'
-import { menuSidebar } from '@/lib/constants/routes'
-import { buildCharacterDetailUrl } from '@/lib/constants/routes'
+import { menuSidebar, buildCharacterDetailUrl } from '@/lib/constants/routes'
+import Link from "next/link"
+
 export default function Sidebar({
   isOpen,
   onClose,
@@ -16,15 +15,9 @@ export default function Sidebar({
   isOpen: boolean
   onClose: () => void
 }) {
-  const router = useRouter()
   const [showCharacters, setShowCharacters] = useState(false)
   const [showCategories, setShowCategories] = useState(false)
-  const { data: characters = [], isLoading: charactersLoading } = useGetCharacter()
-
-  const handleClick = (slug: string) => {
-    router.push(buildCharacterDetailUrl(slug))
-    onClose()
-  }
+  const { data: characters = [] } = useGetCharacter()
 
   return (
     <AnimatePresence>
@@ -63,20 +56,18 @@ export default function Sidebar({
               {/* Static items */}
               {menuSidebar.map((item, i) => (
                 <div key={i}>
-                  <div
-                    className="px-3 py-2 cursor-pointer hover:bg-gray-700 rounded"
-                    onClick={() => {
-                      router.push(item.path)
-                      onClose()
-                    }}
+                  <Link
+                    href={item.path}
+                    onClick={onClose}
+                    className="block px-3 py-2 hover:bg-gray-700 rounded"
                   >
                     {item.label}
-                  </div>
+                  </Link>
                   <hr className="my-2 border-gray-700" />
                 </div>
               ))}
 
-              {/*  QR-code make up */}
+              {/* Characters */}
               <div
                 className="px-3 py-2 cursor-pointer hover:bg-gray-700 rounded flex items-center justify-between"
                 onClick={() => setShowCharacters(!showCharacters)}
@@ -94,25 +85,26 @@ export default function Sidebar({
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-y-auto max-h-80 flex flex-col gap-1"
                   >
-                    {characters?.map((char) => (
-                      <div
+                    {characters.map((char) => (
+                      <Link
                         key={char.id}
-                        className="ml-4 px-3 py-1 cursor-pointer hover:bg-gray-700 rounded text-sm flex items-center gap-2"
-                        onClick={() => handleClick(char.slug)}
+                        href={buildCharacterDetailUrl(char.slug)}
+                        onClick={onClose}
+                        className="ml-4 px-3 py-1 hover:bg-gray-700 rounded text-sm flex items-center gap-2"
                       >
-                        <span>{char.name}</span>
-                      </div>
+                        {char.name}
+                      </Link>
                     ))}
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* anbum */}
+              {/* Album (nếu bật lại) */}
               {/* <div
                 className="mt-2 px-3 py-2 cursor-pointer hover:bg-gray-700 rounded flex items-center justify-between"
                 onClick={() => setShowCategories(!showCategories)}
               >
-                <span>anbum</span>
+                <span>Album</span>
                 {showCategories ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
               </div>
               <hr className="my-2 border-gray-700" /> */}
@@ -126,16 +118,14 @@ export default function Sidebar({
                     className="overflow-hidden flex flex-col gap-1"
                   >
                     {album.map((cat) => (
-                      <div
+                      <Link
                         key={cat.id}
-                        className="ml-4 px-3 py-1 cursor-pointer hover:bg-gray-700 rounded text-sm"
-                        onClick={() => {
-                          router.push(`/home?category=${cat.id}`)
-                          onClose()
-                        }}
+                        href={`/home?category=${cat.id}`}
+                        onClick={onClose}
+                        className="ml-4 px-3 py-1 hover:bg-gray-700 rounded text-sm"
                       >
                         {cat.name}
-                      </div>
+                      </Link>
                     ))}
                   </motion.div>
                 )}

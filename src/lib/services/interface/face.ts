@@ -28,7 +28,6 @@ export interface ParamGetFace {
   take?: number;
   order?: string;
   tagSlugs?: string[];
-  characterSlug?: string;
   sort?: FaceSort
   search?: string
 }

@@ -5,7 +5,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query";
-import { adminLoginService, AdminLoginDto } from "@/lib/services/admin/auth"
+import { adminLoginService, AdminLoginData } from "@/lib/services/admin/auth"
 const schema = z.object({
   username: z.string().min(1, "Tên đăng nhập bắt buộc"),
   password: z.string().min(1, "Mật khẩu bắt buộc"),
@@ -26,7 +26,7 @@ export default function AdminLogin() {
   })
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: AdminLoginDto) => adminLoginService(data),
+    mutationFn: (data: AdminLoginData) => adminLoginService(data),
     onSuccess: () => {
       router.push("/admin/dashboards")
     },
@@ -44,7 +44,7 @@ export default function AdminLogin() {
     }
   });
 
-  const onSubmit: SubmitHandler<AdminLoginDto> = (data) => {
+  const onSubmit: SubmitHandler<AdminLoginData> = (data) => {
     mutate(data);
   };
 

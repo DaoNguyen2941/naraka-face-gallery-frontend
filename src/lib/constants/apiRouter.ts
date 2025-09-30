@@ -13,6 +13,11 @@ export const apiRoutes = {
       dailyTrafficAnalysis: () => `/admin/analytics/daily`,
       pageTrafficAnalysis: () => `/admin/analytics/page`,
     },
+    history: () => `/admin/activity-log`,
+    logout: () => `/admin/auth/logout`,
+    profile: () => `/admin/profile`,
+    changePassword: () => `/admin/password/change`,
+    resetPassword: () => `/admin/password/reset`,
   },
   public: {
     face: (slug?: string) => slug ? `/face/${slug}` : `/face`,

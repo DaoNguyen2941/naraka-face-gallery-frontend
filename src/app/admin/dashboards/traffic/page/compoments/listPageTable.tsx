@@ -8,6 +8,7 @@ import { PlusCircle } from "lucide-react"
 import { toast } from "sonner"
 import { useAdminPageTraffic } from "@/app/admin/hooks/useAdminPageTraffic"
 import { Input } from '@/components/ui/input'
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner"
 
 function formatDate(date: Date) {
   return date.toISOString().split("T")[0]
@@ -23,18 +24,26 @@ export default function PageTable() {
       <div className="flex items-center gap-4">
         <label className="text-sm font-medium">Chọn ngày:</label>
         <Input
-              type="date"
-              value={day}
-              onChange={(e) => setDate(e.target.value)}
-              className="w-40 text-black bg-white border border-gray-300"
-            />
+          type="date"
+          value={day}
+          onChange={(e) => setDate(e.target.value)}
+          className="w-40 text-black bg-white border border-gray-300"
+        />
       </div>
 
-      <DataTable
-        columns={PageColumns()}
-        data={page}
-        searchKey="path"
-      />
+      {isLoading ? (
+        <div className="flex justify-center items-center py-10">
+          <LoadingSpinner className="h-8 w-8 text-orange-500" />
+        </div>
+      ) : (
+        <DataTable
+          columns={PageColumns()}
+          data={page}
+          searchKey="path"
+        />
+      )}
+
+
     </div>
   )
 }

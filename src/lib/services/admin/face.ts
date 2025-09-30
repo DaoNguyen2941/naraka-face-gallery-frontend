@@ -54,7 +54,6 @@ export const updateQrFaceService = async (
   id: string
 ) => {
   const formData = new FormData()
-  console.log(data);
   const { characterId, title, tagIds, description, source } = data;
 
   // Add changed data fields

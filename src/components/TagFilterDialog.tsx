@@ -54,7 +54,7 @@ export default function TagFilterDialog({
       >
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">🎯 Lọc theo tag</h2>
+          <h2 className="text-lg font-semibold">🎯 Lọc theo nhãn</h2>
           <button onClick={onClose} className="p-1 hover:bg-red-700 rounded">
             <X className="w-5 h-5" />
           </button>

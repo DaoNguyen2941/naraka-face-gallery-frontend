@@ -1,7 +1,18 @@
-// src/lib/constants/routes.ts
-
 export const ROUTES = {
-  admin: {},
+  admin: {
+    dashboards:"/admin/dashboards",
+    characters:"/admin/dashboards/characters",
+    faces:"/admin/dashboards/face-images",
+    tags:"/admin/dashboards/tags",
+    album:"/admin/dashboards/album",
+    history:"/admin/dashboards/history",
+    traffic: {
+      daily:"/admin/dashboards/traffic/daily",
+      page: "/admin/dashboards/traffic/page"
+    },
+    contact:"/admin/dashboards/contact",
+    trashCan:"/admin/dashboards/trash-can"
+  },
   public: {
     home: "/",
     new: "/new",

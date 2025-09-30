@@ -15,11 +15,15 @@ export default function Header({
   const [searchValue, setSearchValue] = useState("")
   const router = useRouter()
   
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!searchValue.trim()) return
-    router.push(`/?search=${encodeURIComponent(searchValue)}`)
+const handleSearch = (e: React.FormEvent) => {
+  e.preventDefault()
+  const value = searchValue.trim()
+  if (!value) {
+    router.push("/")
+  } else {
+    router.push(`/?search=${encodeURIComponent(value)}`)
   }
+}
 
   return (
     <header className="w-full shadow bg-gray-900 text-white">
@@ -35,7 +39,7 @@ export default function Header({
         {/* Logo (ẩn khi mobile search mở) */}
         {!showMobileSearch && (
           <div className="font-semibold text-sm sm:text-base">
-            NarakaMakeUp
+            NarakaQRFace
           </div>
         )}
 
@@ -97,7 +101,7 @@ export default function Header({
             type="button"
             onClick={onToggleTagFilter}
             className="p-2 hover:bg-gray-800 rounded"
-            title="Lọc theo tag"
+            title="Lọc theo nhãn"
           >
             <SlidersHorizontal className="w-5 h-5" />
           </button>

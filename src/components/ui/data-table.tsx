@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { 
+import {
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -25,12 +25,16 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   searchKey?: keyof TData
+  disableLocalPagination?: boolean
+  disableLocalSearch?: boolean
 }
 
 export function DataTable<Data, TValue>({
   columns,
   data,
   searchKey,
+  disableLocalPagination = false,
+  disableLocalSearch = false,
 }: DataTableProps<Data, TValue>) {
   const [filter, setFilter] = useState("")
 
@@ -38,25 +42,25 @@ export function DataTable<Data, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    ...(disableLocalSearch ? {} : { getFilteredRowModel: getFilteredRowModel() }),
+    ...(disableLocalPagination ? {} : { getPaginationRowModel: getPaginationRowModel() }),
     autoResetPageIndex: false,
-    state: {
-      globalFilter: filter,
-    },
-    onGlobalFilterChange: setFilter,
-    globalFilterFn: (row, columnId, filterValue) => {
-      if (!searchKey) return true
-      const value = row.original[searchKey]
-      return String(value).toLowerCase().includes(filterValue.toLowerCase())
-    },
+    state: disableLocalSearch ? {} : { globalFilter: filter },
+    onGlobalFilterChange: disableLocalSearch ? undefined : setFilter,
+    globalFilterFn: disableLocalSearch
+      ? undefined
+      : (row, columnId, filterValue) => {
+        if (!searchKey) return true
+        const value = row.original[searchKey]
+        return String(value).toLowerCase().includes(filterValue.toLowerCase())
+      },
   })
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        {searchKey && (
+        {!disableLocalSearch && searchKey && (
           <Input
             placeholder="Tìm kiếm..."
             value={filter}
@@ -64,48 +68,49 @@ export function DataTable<Data, TValue>({
             className="max-w-sm"
           />
         )}
+        {!disableLocalPagination && (
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Trước
+              </Button>
+              <span className="text-sm">
+                Trang {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+              </span>
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Sau
+              </Button>
+            </div>
 
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <Button
-              variant="default"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Trước
-            </Button>
-            <span className="text-sm">
-              Trang {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
-            </span>
-            <Button
-              variant="default"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Sau
-            </Button>
+            {/* Dropdown chọn pageSize */}
+            <div className="flex items-center gap-1">
+              <span className="text-sm">Hiển thị:</span>
+              <select
+                className="border rounded px-2 py-1 text-sm"
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => {
+                  table.setPageSize(Number(e.target.value))
+                }}
+              >
+                {[5, 10, 20, 50].map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-
-          {/* Dropdown chọn pageSize */}
-          <div className="flex items-center gap-1">
-            <span className="text-sm">Hiển thị:</span>
-            <select
-              className="border rounded px-2 py-1 text-sm"
-              value={table.getState().pagination.pageSize}
-              onChange={(e) => {
-                table.setPageSize(Number(e.target.value))
-              }}
-            >
-              {[5, 10, 20, 50].map((size) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+        )}
       </div>
 
       <div>

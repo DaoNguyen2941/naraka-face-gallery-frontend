@@ -14,13 +14,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           {/* Brand */}
           <div>
-            <h2 className="text-xl font-bold text-white">Naraka Make Up</h2>
+            <h2 className="text-xl font-bold text-white">NarakaQRFace</h2>
             <p className="text-sm text-gray-400 mt-1">
               Bộ sưu tập QR Face Code của{" "}
               <span className="text-red-400">Naraka: Bladepoint</span>
             </p>
             <p className="text-xs text-gray-500 mt-1">
-              Fan-made project, không chính thức từ 24 Entertainment
+              Fan-made project, unofficial from 24 Entertainment
             </p>
           </div>
 
@@ -69,7 +69,7 @@ export default function Footer() {
                 <DialogHeader>
                   <DialogTitle className="text-black">Donate!</DialogTitle>
                   {/* Use div instead of DialogDescription if you want nested divs */}
-                  <div className="text-black space-y-2">
+                  <div className="text-black space-y-1">
                     <div className="font-semibold">
                       Nếu đạo hữu cảm thấy vui, muốn đóng góp chút bạc.
                     </div>
@@ -95,15 +95,14 @@ export default function Footer() {
                 </div>
               </DialogContent>
             </Dialog>
-
-
           </div>
         </div>
         {/* Copyright */}
         <div className="border-t border-gray-800 mt-8 pt-6 text-center text-xs sm:text-sm text-gray-500">
-          © {new Date().getFullYear()} Naraka Make Up. Fan Project. <br />
+          © {new Date().getFullYear()} Naraka Qr Face. Fan Project. <br />
           <span className="text-[10px] sm:text-xs text-gray-600">
-            Naraka: Bladepoint © 24 Entertainment. Đây chỉ là dự án cộng đồng.
+            Naraka: Bladepoint © 24 Entertainment.
+            This is just a community project.
           </span>
         </div>
       </div>
