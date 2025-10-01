@@ -1,3 +1,5 @@
+"use client"
+
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { trackPageService, InputTrackPage } from '@/lib/services/public/track.service';

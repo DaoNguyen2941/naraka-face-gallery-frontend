@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import {
   Dialog,
   DialogContent,
@@ -49,9 +49,7 @@ export default function TagDialog({
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
-    watch,
     formState: { errors },
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -60,8 +58,6 @@ export default function TagDialog({
       description: "",
     },
   })
-
-  // Cleanup preview URL to avoid memory leak
 
   useEffect(() => {
     if (!open) return;

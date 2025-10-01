@@ -1,7 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { PageTraffic } from "@/types/analytics/traffic"
-import { Button } from "@/components/ui/button"
-import { Pencil, Trash } from "lucide-react"
+import { PageTraffic } from "@/types"
 
 export const PageColumns = (
 ): ColumnDef<PageTraffic>[] => [

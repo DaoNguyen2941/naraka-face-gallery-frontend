@@ -7,7 +7,7 @@ export type History = {
     action: string,
     description: string,
     recordId: string,
-    metadata: any,
+    metadata: unknown,
     ipAddress: string,
     userAgent: string,
 };

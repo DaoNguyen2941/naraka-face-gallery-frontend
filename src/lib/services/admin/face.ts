@@ -10,7 +10,7 @@ export const adminGetFaceService = async (
 ): Promise<PaginationResponse<Face>> => {
   const merged = { ...defaultFaceParams, ...params };
   const { tagSlugs, ...rest } = merged;
-  const finalParams: Record<string, any> = { ...rest };
+  const finalParams: Record<string, unknown> = { ...rest };
   if (tagSlugs && tagSlugs.length > 0) {
     finalParams.tagSlugs = tagSlugs.join(','); // gửi dạng tagSlugs=slug1,slug2
   }
@@ -80,8 +80,8 @@ export const updateQrFaceService = async (
     })
   }
 
-  if (Array.isArray(data.tagIds)) {
-    data.tagIds.forEach((tagId) => formData.append("tagIds", tagId))
+  if (Array.isArray(tagIds)) {
+    tagIds.forEach((tagId) => formData.append("tagIds", tagId))
   }
 
 
@@ -93,7 +93,7 @@ export const updateQrFaceService = async (
     formData.append("qrCodeGlobals", files.qrCodeGlobals)
   }
 
-  const debugObj: Record<string, any[]> = {}
+  const debugObj: Record<string, unknown[]> = {}
 
   for (const [key, value] of formData.entries()) {
     if (!debugObj[key]) {

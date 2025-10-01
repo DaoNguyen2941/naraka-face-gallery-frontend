@@ -3,9 +3,6 @@
 import { useState } from "react"
 import { PageColumns } from "./PageColumn"
 import { DataTable } from "@/components/ui/data-table"
-import { Button } from "@/components/ui/button"
-import { PlusCircle } from "lucide-react"
-import { toast } from "sonner"
 import { useAdminPageTraffic } from "@/app/admin/hooks/useAdminPageTraffic"
 import { Input } from '@/components/ui/input'
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner"

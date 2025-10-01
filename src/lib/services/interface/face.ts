@@ -29,7 +29,8 @@ export interface ParamGetFace {
   order?: string;
   tagSlugs?: string[];
   sort?: FaceSort
-  search?: string
+  search?: string;
+  characterSlug?: string
 }
 
 export const defaultFaceParams: ParamGetFace = {

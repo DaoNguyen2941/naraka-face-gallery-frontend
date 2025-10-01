@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { HistoryColumns } from "./historyColumn"
-import { DataTable } from "@/components/ui/data-table"
 import { useAdminHistory } from "@/app/admin/hooks/useAdminHistory"
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner"
 import { Input } from '@/components/ui/input'
@@ -18,8 +17,6 @@ export default function HistoryTable() {
     const sevenDaysAgo = new Date()
     sevenDaysAgo.setDate(today.getDate() - 7)
     const [page, setPage] = useState<number>(1)
-
-    const [selectedDate, setSelectedDate] = useState<string | null>(null)
     const [fromDate, setFromDate] = useState<string>(formatDate(sevenDaysAgo))
     const [toDate, setToDate] = useState<string>(formatDate(today))
     const { data: history, isLoading } = useAdminHistory({ page, order: "DESC", toDate, fromDate })

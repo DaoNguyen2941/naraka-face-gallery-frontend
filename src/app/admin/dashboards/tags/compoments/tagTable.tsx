@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { PlusCircle } from "lucide-react"
 import TagDialog from "./TagDialog"
 import { Tag } from "@/types/tag/tag.type"
-import { useQuery, useMutation } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { useQueryClient } from "@tanstack/react-query"
 import { deleteTagService } from "@/lib/services/admin/tag"
 import { toast } from "sonner"
@@ -22,7 +22,7 @@ export default function TagTable() {
     const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null)
     const { data: tags = [], isLoading } = useAdminTags()
 
-    const { mutate, isPending } = useMutation({
+    const { mutate } = useMutation({
         mutationFn: (id: string) => deleteTagService(id),
         onSuccess(data, tagId) {
             toast.success('Đã xóa thẻ thành công thành công!')

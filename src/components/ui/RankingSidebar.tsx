@@ -1,19 +1,14 @@
 "use client"
 
-import { PublicFace } from "@/types/face/publicFace.type"
 import FaceRankingItem from "../FaceRankingItem"
 import { useRouter } from "next/navigation"
 import { buildFaceDetailUrl } from "@/lib/constants/routes"
 import { useFaces } from "@/app/(public)/hooks/useGetFaces"
 import { FaceSort } from "@/lib/services/interface/face"
 
-interface RankingSidebarProps {
-  faces: PublicFace[]
-}
-
 export default function RankingSidebar() {
   const router = useRouter()
-  const { data, isLoading } = useFaces({ sort: FaceSort.HOT });
+  const { data } = useFaces({ sort: FaceSort.HOT });
   const faceList = data?.pages.flatMap((page) => page.data) ?? []
 
   // Lấy top 10 theo lượt xem

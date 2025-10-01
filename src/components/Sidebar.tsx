@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronDown, ChevronRight } from "lucide-react"
-import album from "@/data/album.json"
 import { useGetCharacter } from '@/app/(public)/hooks/useGetCharacter'
 import { menuSidebar, buildCharacterDetailUrl } from '@/lib/constants/routes'
 import Link from "next/link"
@@ -16,7 +15,6 @@ export default function Sidebar({
   onClose: () => void
 }) {
   const [showCharacters, setShowCharacters] = useState(false)
-  const [showCategories, setShowCategories] = useState(false)
   const { data: characters = [] } = useGetCharacter()
 
   return (
@@ -60,6 +58,7 @@ export default function Sidebar({
                     href={item.path}
                     onClick={onClose}
                     className="block px-3 py-2 hover:bg-gray-700 rounded"
+                    prefetch
                   >
                     {item.label}
                   </Link>
@@ -91,6 +90,7 @@ export default function Sidebar({
                         href={buildCharacterDetailUrl(char.slug)}
                         onClick={onClose}
                         className="ml-4 px-3 py-1 hover:bg-gray-700 rounded text-sm flex items-center gap-2"
+                        prefetch
                       >
                         {char.name}
                       </Link>
@@ -109,7 +109,7 @@ export default function Sidebar({
               </div>
               <hr className="my-2 border-gray-700" /> */}
 
-              <AnimatePresence>
+              {/* <AnimatePresence>
                 {showCategories && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
@@ -123,13 +123,14 @@ export default function Sidebar({
                         href={`/home?category=${cat.id}`}
                         onClick={onClose}
                         className="ml-4 px-3 py-1 hover:bg-gray-700 rounded text-sm"
+                        prefetch
                       >
                         {cat.name}
                       </Link>
                     ))}
                   </motion.div>
                 )}
-              </AnimatePresence>
+              </AnimatePresence> */}
             </div>
           </motion.aside>
         </motion.div>

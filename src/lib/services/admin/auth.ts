@@ -6,8 +6,14 @@ export interface AdminLoginData {
   password: string;
 }
 
-export interface AdminChangePassword {
-  password: string;
+export interface AdminChangePasswordData {
+  password: string,
+  newPassword: string;
+}
+
+export interface ChangePasswordInput {
+  oldPassword: string,
+  confirmPassword: string;
   newPassword: string;
 }
 
@@ -21,7 +27,7 @@ export const adminLogoutService = async () => {
   return response.data;
 };
 
-export const adminChangePasswordService = async (data: AdminChangePassword) => {
-  const response: AxiosResponse = await http.post(apiRoutes.admin.changePassword(), data);
+export const adminChangePasswordService = async (data: AdminChangePasswordData) => {
+  const response: AxiosResponse = await http.post(apiRoutes.admin.changePassword(), data);  
   return response.data;
 };

@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
+import Image from "next/image";
 
 const schema = z.object({
   fullName: z.string().min(2, "Tên tối thiểu 2 ký tự"),
@@ -27,7 +28,6 @@ type FormValues = z.infer<typeof schema>;
 
 export default function ProfileForm({
   defaultValues,
-  onSuccess,
 }: {
   defaultValues?: FormValues;
   onSuccess?: () => void;
@@ -48,15 +48,8 @@ export default function ProfileForm({
     }
   };
 
-  const onSubmit = async (values: FormValues) => {
-    try {
-      // fake API call
-      await new Promise((res) => setTimeout(res, 1000));
-      toast.success("Cập nhật thông tin thành công 🎉");
-      onSuccess?.();
-    } catch (err: any) {
-      toast.error(err?.message || "Có lỗi xảy ra");
-    }
+  const onSubmit = async () => {
+    toast.success("Cập nhật thông tin thành công 🎉");
   };
 
   return (
@@ -65,9 +58,10 @@ export default function ProfileForm({
         {/* Avatar */}
         <div className="flex flex-col items-center">
           <div className="relative w-24 h-24">
-            <img
+            <Image
               src={avatarPreview || "/default-avatar.png"}
               alt="Avatar"
+              fill
               className="w-24 h-24 rounded-full object-cover border border-gray-300"
             />
             <button

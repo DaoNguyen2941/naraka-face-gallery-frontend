@@ -3,8 +3,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { PlusCircle } from "lucide-react"
 import FaceDialog from "./FaceDialog"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { adminGetFaceService } from "@/lib/services/admin/face"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { DeleteQrFaceService } from "@/lib/services/admin/face"
 import { toast } from "sonner"
 import ConfirmDialog from "@/app/admin/components/ConfirmDialog"
@@ -16,12 +15,7 @@ import { useAdminFaces } from "@/app/admin/hooks/useAdminFaces"
 import { Input } from "@/components/ui/input"
 import TagFilterDialog from "@/components/TagFilterDialog"
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner"
-
-import {
-    Menu,
-    Search,
-    SlidersHorizontal, // icon lọc
-} from 'lucide-react'
+import {SlidersHorizontal} from 'lucide-react'
 
 export default function QrFaceTable() {
     const [selected, setSelected] = useState<Face | null>(null)
@@ -29,16 +23,16 @@ export default function QrFaceTable() {
     const [deleteQrFaceId, setDeleteQrFaceId] = useState<string | null>(null)
     const [search, setSearch] = useState("")
     const queryClient = useQueryClient()
-    const { data: tagList, isLoading: tagsLoading } = useAdminTags()
+    const { data: tagList } = useAdminTags()
     const [page, setPage] = useState<number>(1)
     const [pageSize, setPageSize] = useState<number>(12)
     const [showTagFilter, setShowTagFilter] = useState(false)
     const [tagFilter, setTagFilter] = useState<string[]>([])
     const { data: faces, isLoading } = useAdminFaces({ page, pageSize, tagFilter });
 
-    const { mutate, isPending } = useMutation({
+    const { mutate } = useMutation({
         mutationFn: (id: string) => DeleteQrFaceService(id),
-        onSuccess(data, faceId) {
+        onSuccess(_, faceId) {
             toast.success("Đã xóa khuôn mặt thành công!")
             queryClient.setQueryData<PaginationResponse<Face>>(
                 ["admin-Qr-face", page, pageSize, tagFilter],

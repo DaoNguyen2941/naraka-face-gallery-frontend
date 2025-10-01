@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 import FaceGallery from "@/components/FaceGallery"
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner"
-import { FaceSort, FaceSortOption } from "@/lib/services/interface/face"
+import { FaceSortOption } from "@/lib/services/interface/face"
 import RankingSidebar from "./ui/RankingSidebar"
 import { useFaces } from "@/app/(public)/hooks/useGetFaces"
 

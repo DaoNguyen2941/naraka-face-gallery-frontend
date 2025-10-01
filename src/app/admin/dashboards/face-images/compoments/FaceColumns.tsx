@@ -12,17 +12,6 @@ export const FaceColumns = (
       header: "Tên",
       cell: ({ row }) => row.original.title,
     },
-    // {
-    //   accessorKey: "avatar",
-    //   header: "Ảnh",
-    //   cell: ({ row }) => (
-    //     <img
-    //       src={row.original.avatar.url}
-    //       alt={row.original.name}
-    //       className="w-10 h-10  object-cover"
-    //     />
-    //   ),
-    // },
     {
       accessorKey: "character",
       header: "Nhân vật",

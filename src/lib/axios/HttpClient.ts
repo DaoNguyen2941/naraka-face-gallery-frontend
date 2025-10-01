@@ -1,18 +1,23 @@
-import axios, { AxiosInstance, AxiosError, AxiosResponse } from "axios"
+import axios, { AxiosInstance, AxiosError, AxiosResponse, AxiosRequestConfig } from "axios"
 import { apiRoutes } from "../constants/apiRouter"
+
+// Extend AxiosRequestConfig để thêm _retry
+interface RetryAxiosRequestConfig extends AxiosRequestConfig {
+  _retry?: boolean
+}
 
 export class HttpClient {
   instance: AxiosInstance
   isRefreshing = false
   failedQueue: Array<{
     resolve: (value?: unknown) => void
-    reject: (reason?: any) => void
+    reject: (reason?: unknown) => void
   }> = []
 
   constructor() {
     this.instance = axios.create({
       baseURL: apiRoutes.host,
-      withCredentials: true, // gửi cookie trong mọi request
+      withCredentials: true,
       timeout: 10000,
     })
 
@@ -23,15 +28,15 @@ export class HttpClient {
     this.instance.interceptors.response.use(
       (response: AxiosResponse) => response,
       async (error: AxiosError) => {
-        const originalRequest = error.config as any
+        const originalRequest = error.config as RetryAxiosRequestConfig
 
-        // Nếu không phải lỗi 401 hoặc là login/refresh, thì bỏ qua
+        // Nếu không phải lỗi 401 hoặc là login/refresh, bỏ qua
         if (
           !originalRequest ||
           error.response?.status !== 401 ||
           originalRequest._retry ||
-          originalRequest.url.includes("/auth/login") ||
-          originalRequest.url.includes("/auth/refresh")
+          originalRequest.url?.includes("/auth/login") ||
+          originalRequest.url?.includes("/auth/refresh")
         ) {
           return Promise.reject(error)
         }
@@ -49,17 +54,18 @@ export class HttpClient {
         this.isRefreshing = true
 
         try {
-          await this.instance.get(apiRoutes.admin.refresh()) // server sẽ set lại cookie access token
+          // refresh token
+          await this.instance.get(apiRoutes.admin.refresh())
 
-          this.failedQueue.forEach(p => p.resolve())
+          this.failedQueue.forEach((p) => p.resolve())
           this.failedQueue = []
 
           return this.instance(originalRequest)
         } catch (refreshError) {
-          this.failedQueue.forEach(p => p.reject(refreshError))
+          this.failedQueue.forEach((p) => p.reject(refreshError))
           this.failedQueue = []
-          window.location.href = "/admin/login"
-          
+          window.location.href = "/login"
+
           return Promise.reject(refreshError)
         } finally {
           this.isRefreshing = false

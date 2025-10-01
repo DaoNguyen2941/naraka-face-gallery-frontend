@@ -1,7 +1,4 @@
-import { ReactQueryProvider } from "../../provider/ReactQueryProvider"
 import type { Metadata } from "next"
-import { Toaster } from "sonner"
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export const metadata: Metadata = {
   title: "Admin Naraka",

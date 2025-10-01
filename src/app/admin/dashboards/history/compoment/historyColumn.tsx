@@ -1,6 +1,4 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { Button } from "@/components/ui/button"
-import { Pencil, Trash } from "lucide-react"
 import { History } from "@/types/history"
 
 export const HistoryColumns = (): ColumnDef<History>[] => [

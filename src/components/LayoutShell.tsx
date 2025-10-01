@@ -6,20 +6,20 @@ import Sidebar from './Sidebar';
 import TagFilterDialog from './TagFilterDialog';
 import { useGetTag } from '@/app/(public)/hooks/useGetTag';
 import { useRouter } from 'next/navigation'
-import { useTrackPageView } from '@/app/(public)/hooks/track/useTrackPageView';
 
 import Footer from './Footer';
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
   const [showSidebar, setShowSidebar] = useState(false)
   const [showTagFilter, setShowTagFilter] = useState(false)
-  const { data: tags = [], isLoading } = useGetTag()
+  const { data: tags = [] } = useGetTag()
   const router = useRouter()
-  useTrackPageView()
 
   const handleApply = (tags: string[]) => {
-    tags.length ?
-      router.push(`/?tags=${tags}`) :
-      router.push(`/`)
+    if (tags.length) {
+      router.push(`/?tags=${tags.join(',')}`)
+    } else {
+      router.push('/')
+    }
   }
 
   return (

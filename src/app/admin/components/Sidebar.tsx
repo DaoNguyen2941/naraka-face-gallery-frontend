@@ -104,15 +104,6 @@ export function Sidebar() {
           )
         )}
       </nav>
-      {/* <div className="p-4 border-t border-zinc-800">
-        <Link
-          href="/admin/login"
-          className="flex items-center gap-2 text-red-500 hover:underline"
-        >
-          <LogOut className="w-4 h-4" />
-          Đăng xuất
-        </Link>
-      </div> */}
     </aside>
   )
 }

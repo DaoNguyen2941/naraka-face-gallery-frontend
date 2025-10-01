@@ -1,9 +1,12 @@
-import { PublicFace } from "@/types/face/publicFace.type"
+"use client";
+
+import Image from "next/image";
+import { PublicFace } from "@/types/face/publicFace.type";
 
 interface FaceRankingItemProps {
-  face: PublicFace
-  rank: number
-  onClick?: (slug: string) => void
+  face: PublicFace;
+  rank: number;
+  onClick?: (slug: string) => void;
 }
 
 export default function FaceRankingItem({ face, rank, onClick }: FaceRankingItemProps) {
@@ -18,11 +21,16 @@ export default function FaceRankingItem({ face, rank, onClick }: FaceRankingItem
       </span>
 
       {/* Thumbnail */}
-      <img
-        src={face.imageReviews}
-        alt={face.title}
-        className="w-12 h-12 rounded-md object-cover flex-shrink-0"
-      />
+      <div className="w-12 h-12 relative flex-shrink-0">
+        <Image
+          src={face.imageReviews}
+          alt={face.title}
+          fill
+          className="rounded-md object-cover"
+          sizes="48px"
+          priority={rank <= 3} // ưu tiên load các top rank
+        />
+      </div>
 
       {/* Nội dung */}
       <div className="min-w-0 flex-1">
@@ -34,5 +42,5 @@ export default function FaceRankingItem({ face, rank, onClick }: FaceRankingItem
         </p>
       </div>
     </div>
-  )
+  );
 }

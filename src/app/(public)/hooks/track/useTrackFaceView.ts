@@ -11,10 +11,8 @@ export function useTrackFaceView(slug: string) {
     if (!slug) return
 
     const timer = setTimeout(() => {
-      trackFaceViewService(slug).catch((err) => {
-        console.error('Track face view error:', err)
-      })
-    }, 10000) 
+      trackFaceViewService(slug)
+    }, 5000) 
 
     return () => clearTimeout(timer)
   }, [slug])

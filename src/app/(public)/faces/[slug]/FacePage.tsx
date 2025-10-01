@@ -1,6 +1,5 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { getFaceDetailsService } from "@/lib/services/public/face.service";
@@ -13,6 +12,7 @@ import { ArrowLeft } from "lucide-react";
 import { downloadQrFileService } from "@/lib/services/public/face.service";
 import { useTrackFaceView } from "../../hooks/track/useTrackFaceView";
 import { ROUTES } from "@/lib/constants/routes";
+import { useParams } from "next/navigation";
 
 export default function FaceDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -30,7 +30,6 @@ export default function FaceDetailPage() {
 
   const {
     mutate: downloadQr,
-    isPending: downloadPending,
   } = useMutation({
     mutationFn: ({ urlFile, slug }: { urlFile: string; slug: string }) =>
       downloadQrFileService(urlFile, slug),
@@ -200,7 +199,7 @@ export default function FaceDetailPage() {
             </p>
             {faceData.source ? (
               <a
-                href="https://ds.163.com/feed/68b40f986eb2dd74f84d1826"
+                href={faceData.source}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-blue-400 hover:underline mt-1"

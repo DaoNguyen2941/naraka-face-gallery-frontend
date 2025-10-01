@@ -1,8 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Album } from "@/types/album.type"
 import { Button } from "@/components/ui/button"
-import { Pencil, Trash, FolderOpenDot  } from "lucide-react"
-import { redirect } from 'next/navigation'
+import { Pencil, Trash, FolderOpenDot } from "lucide-react"
+import Image from "next/image"
 
 export const albumColumns = (
     onEdit: (album: Album) => void,
@@ -18,11 +18,14 @@ export const albumColumns = (
             accessorKey: "avatar",
             header: "Ảnh",
             cell: ({ row }) => (
-                <img
-                    src={row.original.cover_photo.url}
-                    alt={row.original.name}
-                    className="w-10 h-10  object-cover"
-                />
+                <div className="w-10 h-10 relative">
+                    <Image
+                        src={row.original.cover_photo.url}
+                        alt={row.original.name}
+                        fill
+                        className="object-cover rounded"
+                    />
+                </div>
             ),
         },
         {
@@ -43,7 +46,7 @@ export const albumColumns = (
                     <Button
                         size="sm"
                         variant="secondary"
-                        onClick={() =>onOpen(row.original.slug)}
+                        onClick={() => onOpen(row.original.slug)}
                     >
                         <FolderOpenDot className="w-4 h-4" />
                     </Button>

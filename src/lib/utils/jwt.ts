@@ -2,7 +2,7 @@ import { jwtDecode } from "jwt-decode"
 
 export interface JwtPayload {
   exp: number // thời gian hết hạn (giây)
-  [key: string]: any
+  [key: string]: unknown 
 }
 
 export function isTokenValid(token: string): boolean {
@@ -10,7 +10,7 @@ export function isTokenValid(token: string): boolean {
     const decoded = jwtDecode<JwtPayload>(token)
     const now = Date.now() / 1000 // thời gian hiện tại (giây)
     return decoded.exp > now
-  } catch (e) {
+  } catch {
     return false
   }
 }

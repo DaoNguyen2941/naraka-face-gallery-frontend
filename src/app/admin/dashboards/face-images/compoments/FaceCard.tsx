@@ -21,7 +21,7 @@ export default function FaceCard({ face, onDelete, onEdit }: FaceCardProps) {
       {/* Hình ảnh */}
       <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
         <Image
-          src={face.qrCodeGlobals.url}
+          src={face.imageReviews[0].url}
           alt={face.title}
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"

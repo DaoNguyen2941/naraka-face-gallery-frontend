@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
-import { any, z } from "zod"
+import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Image from "next/image"
 import { useMutation } from "@tanstack/react-query"
@@ -77,13 +77,12 @@ export default function FaceDialog({
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const cnInputRef = useRef<HTMLInputElement | null>(null)
   const globalInputRef = useRef<HTMLInputElement | null>(null)
-  const { data: characters = [], isLoading: charactersLoading } = useAdminCharacterList()
+  const { data: characters = [], } = useAdminCharacterList()
   const schema = isEdit ? editSchema : createSchema
 
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
     watch,
     control,
@@ -131,7 +130,7 @@ export default function FaceDialog({
       reset({
         title: face.title,
         description: face.description ?? "",
-        imageReviews: face.imageReviews as any,
+        imageReviews: face.imageReviews,
         qrCodeCN: undefined,
         qrCodeGlobals: undefined,
         tags: face.tags.map((tag) => tag.id),
@@ -142,7 +141,7 @@ export default function FaceDialog({
 
   }, [face, open, reset])
 
-  const { mutate, isError, error, isPending } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async ({ data, files }: { data: formDataQrFaceUpdate; files: filesData }) => {
       return isEdit
         ? updateQrFaceService(data, files, face!.id)
@@ -153,7 +152,7 @@ export default function FaceDialog({
       reset()
       onSave(newFace, isEdit)
     },
-    onError: (error: AxiosError<any>) => {
+    onError: (error: AxiosError<{ message: string }>) => {
       const isDuplicateTitle = error.response?.data?.message?.includes('đã tồn tại');
       if (isDuplicateTitle) {
         toast.error("Tiêu đề đã tồn tại. Vui lòng chọn tiêu đề khác");
@@ -168,6 +167,7 @@ export default function FaceDialog({
   })
 
   const onSubmit: SubmitHandler<z.infer<typeof schema>> = (data) => {
+    // --- Tạo payload type-safe ---
     const payload: formDataQrFace = {
       title: data.title,
       description: data.description ?? "",
@@ -176,14 +176,14 @@ export default function FaceDialog({
       source: data.source ?? "",
     }
 
-    const files: filesData | any = {}
-
-    if (data.qrCodeGlobals instanceof File) files.qrCodeGlobals = data.qrCodeGlobals
-    if (data.qrCodeCN instanceof File) files.qrCodeCN = data.qrCodeCN
-    if (data.imageReviews.some((f) => f instanceof File)) {
-      files.imageReviews = data.imageReviews.filter((f) => f instanceof File) as File[]
+    // --- Chuẩn bị files ---
+    const files: filesData = {
+      qrCodeGlobals: data.qrCodeGlobals as File, // bắt buộc
+      qrCodeCN: data.qrCodeCN instanceof File ? data.qrCodeCN : undefined,
+      imageReviews: data.imageReviews.filter((f) => f instanceof File) || [], // luôn là array
     }
 
+    // --- Edit mode ---
     if (isEdit && face) {
       const original: formDataQrFace = {
         title: face.title,
@@ -194,21 +194,27 @@ export default function FaceDialog({
       }
 
       const { changed, isChanged } = getChangedFields(payload, original, {
-        tagIds: (a, b) => JSON.stringify([...a].sort()) === JSON.stringify([...b].sort()),
+        // so sánh array tagIds an toàn
+        tagIds: (a, b) =>
+          Array.isArray(a) &&
+          Array.isArray(b) &&
+          a.length === b.length &&
+          a.every((v, i) => v === b[i]),
       })
 
-      const hasFiles = Object.keys(files).length > 0
+      const hasFiles = files.imageReviews.length > 0 || files.qrCodeCN || files.qrCodeGlobals
       if (!isChanged && !hasFiles) {
         toast.info("Không có thay đổi nào")
         return
       }
+
       mutate({ data: changed, files })
       return
     }
-    // create
+
+    // --- Create mode ---
     mutate({ data: payload, files })
   }
-
   const triggerFileSelect = () => fileInputRef.current?.click()
 
   const closeDialog = () => {

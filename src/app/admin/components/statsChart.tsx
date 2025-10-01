@@ -24,9 +24,16 @@ function formatDate(date: Date) {
  * Lấy giá trị pageviews với fallback cho cả `pageviews` hoặc `pageViews`
  * để tránh lỗi do khác tên trường giữa backend / frontend.
  */
-function getPageViews(traffic: Partial<TrafficByDay>) {
-  return (traffic as any).pageviews ?? (traffic as any).pageViews ?? 0
+function getPageViews(traffic: Partial<TrafficByDay>): number {
+  if ("pageviews" in traffic && typeof traffic.pageviews === "number") {
+    return traffic.pageviews;
+  }
+  if ("pageViews" in traffic && typeof traffic.pageViews === "number") {
+    return traffic.pageViews;
+  }
+  return 0;
 }
+
 
 function transformTrafficToPopularPages(current: Partial<TrafficByDay>, baseline: Partial<TrafficByDay>) {
   const currentPageviews = getPageViews(current)
@@ -49,11 +56,18 @@ function transformTrafficToPopularPages(current: Partial<TrafficByDay>, baseline
   ]
 }
 
-/**
- * CustomTooltip: an toàn với nhiều dạng payload.
- * payload có thể là [{ payload: { ... } }] hoặc [{ value, name, payload }].
- */
-function CustomTooltip({ active, payload, label }: any) {
+interface CustomTooltipProps {
+  active?: boolean
+  payload?: {
+    payload: {
+      metric?: string
+      value?: number | string
+      baseline?: number | string
+    }
+  }[]
+  label?: string
+}
+function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   if (!active || !payload || !payload.length) return null
 
   const entry = payload[0]
@@ -96,7 +110,7 @@ export default function StatsCharts() {
   const [startDate, setStartDate] = useState<string>(formatDate(sevenDaysAgo))
   const [endDate, setEndDate] = useState<string>(formatDate(today))
 
-  const { data: analyticTraffic = [], isLoading } = useAdminAnalyticTraffic({
+  const { data: analyticTraffic = [] } = useAdminAnalyticTraffic({
     start: startDate,
     end: endDate,
   })

@@ -16,9 +16,10 @@ import Image from "next/image"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { createCharacterService, updateCharacterService } from "@/lib/services/admin/characters"
-import { Character } from "@/types/character.type"
+import { Character } from "@/types"
 import { Loader2 } from "lucide-react"
 import { formDataCharacter } from "@/lib/services/admin/characters"
+import { AxiosError } from "axios"
 
 type Props = {
   open: boolean
@@ -117,8 +118,9 @@ export default function CharacterDialog({
       toast.success(isEdit ? "Cập nhật nhân vật thành công" : "Tạo nhân vật thành công")
       onSave(newCharacter, isEdit)
     },
-    onError: () => {
-      toast.error(isEdit ? "Lỗi khi cập nhật nhân vật" : "Lỗi khi tạo nhân vật")
+    onError: (e: AxiosError) => {
+      const error = e as AxiosError<{ message: string }>
+      toast.error(error.response?.data?.message || "Có lỗi xảy ra")
     },
   })
 
@@ -162,7 +164,7 @@ export default function CharacterDialog({
                 width={128}
                 height={128}
                 className="object-cover w-full h-full"
-                unoptimized 
+                unoptimized
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-sm text-muted-foreground">

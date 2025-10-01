@@ -1,6 +1,5 @@
 // components/shared/ConfirmDialog.tsx
 "use client"
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,7 +10,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-
 interface ConfirmDialogProps {
   open: boolean
   title?: string

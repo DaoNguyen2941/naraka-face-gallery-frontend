@@ -1,8 +1,15 @@
 "use client";
-import { FaFacebookF, FaDiscord, FaGithub } from "react-icons/fa";
+
 import { SiTiktok } from "react-icons/si";
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import Image from "next/image";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function Footer() {
   const [open, setOpen] = useState(false);
@@ -44,23 +51,16 @@ export default function Footer() {
               <SiTiktok size={28} />
             </a>
 
-            {/* <a
-              href="https://discord.gg/..."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="h-12 w-12 flex items-center justify-center bg-gray-700 rounded-lg hover:bg-gray-600 transition"
-            >
-              <FaDiscord size={28} />
-            </a> */}
-
             {/* Donate Dialog */}
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
                 <button className="hover:opacity-80 transition">
-                  <img
+                  <Image
                     src="/donate.jpg"
                     alt="Donate"
-                    className="h-12 w-12 object-contain"
+                    width={48}
+                    height={48}
+                    className="object-contain"
                   />
                 </button>
               </DialogTrigger>
@@ -68,7 +68,6 @@ export default function Footer() {
               <DialogContent className="max-w-md md:max-w-2xl bg-[url('/donate2.png')] bg-cover bg-center text-white">
                 <DialogHeader>
                   <DialogTitle className="text-black">Donate!</DialogTitle>
-                  {/* Use div instead of DialogDescription if you want nested divs */}
                   <div className="text-black space-y-1">
                     <div className="font-semibold">
                       Nếu đạo hữu cảm thấy vui, muốn đóng góp chút bạc.
@@ -83,10 +82,12 @@ export default function Footer() {
                 </DialogHeader>
 
                 <div className="flex flex-col items-start space-y-4 mt-4">
-                  <img
+                  <Image
                     src="/vcb.jpg"
                     alt="QR Code for Donate"
-                    className="w-40 h-40 object-contain border-4 border-white rounded-lg ml-3"
+                    width={160}
+                    height={160}
+                    className="object-contain border-4 border-white rounded-lg ml-3"
                   />
                   <b className="text-sm text-center">
                     <span className="text-green-500">Vietcombank:</span>
@@ -97,12 +98,12 @@ export default function Footer() {
             </Dialog>
           </div>
         </div>
+
         {/* Copyright */}
         <div className="border-t border-gray-800 mt-8 pt-6 text-center text-xs sm:text-sm text-gray-500">
           © {new Date().getFullYear()} Naraka Qr Face. Fan Project. <br />
           <span className="text-[10px] sm:text-xs text-gray-600">
-            Naraka: Bladepoint © 24 Entertainment.
-            This is just a community project.
+            Naraka: Bladepoint © 24 Entertainment. This is just a community project.
           </span>
         </div>
       </div>

@@ -23,16 +23,14 @@ export default function AlbumTable() {
 
     const {
         data: album = [],
-        isLoading,
-        refetch,
     } = useQuery<Album[]>({
         queryKey: ["admin-albums"],
         queryFn: getAlbumsService,
     })
 
-    const { mutate, isPending } = useMutation({
+    const { mutate } = useMutation({
         mutationFn: (id: string) => deleteAlbumService(id),
-        onSuccess(data, deletedId) {
+        onSuccess(_, deletedId) {
             toast.success('Đã xóa album thành công!')
             queryClient.setQueryData<Album[]>(['admin-albums'], (oldData) => {
                 return oldData?.filter(character => character.id !== deletedId) ?? [];
