@@ -7,11 +7,11 @@ import { useTrackPageView } from "../../hooks/track/useTrackPageView";
 
 export default function CharacterPage() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: characters = [], isLoading } = useGetCharacter()
+  const { data: characters = [] } = useGetCharacter()
   const character = characters.find((char) => char.slug === slug)
   useTrackPageView()
 
-  if (!isLoading && !character) return notFound()
+  if (!character) notFound();
 
   return (
     < div

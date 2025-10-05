@@ -14,6 +14,7 @@ import { useTrackFaceView } from "../../hooks/track/useTrackFaceView";
 import { useTrackPageView } from "../../hooks/track/useTrackPageView";
 import { ROUTES } from "@/lib/routers/routes";
 import { useParams } from "next/navigation";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function FaceDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -44,8 +45,26 @@ export default function FaceDetailPage() {
   }, [slug, fetchFace]);
 
   // Loading / chưa có data
-  if (isPending || !faceData) return <p className="p-6">Loading...</p>;
-
+  if (isPending || !faceData) {
+    return (
+      <div className="min-h-screen w-full bg-gray-900 flex flex-col items-center justify-center space-y-6">
+      <LoadingSpinner  />
+      <div className="w-full max-w-5xl p-6 animate-pulse space-y-4">
+        <div className="backdrop-blur-md bg-black/50 rounded-2xl p-6 space-y-4">
+          <div className="h-8 bg-gray-700 rounded w-1/3 mx-auto" />
+          <div className="h-6 bg-gray-700 rounded w-1/2 mx-auto" />
+          <div className="h-4 bg-gray-700 rounded w-1/4 mx-auto" />
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
+            {Array(6).fill(0).map((_, i) => (
+              <div key={i} className="aspect-square rounded bg-gray-700" />
+            ))}
+          </div>
+          <div className="h-32 bg-gray-700 rounded mt-4" />
+        </div>
+      </div>
+    </div>
+    );
+  }
   // Chuẩn bị slides cho Lightbox
   const slides = [
     ...(faceData.imageReviews?.map((url) => ({ src: url })) ?? []),
@@ -60,8 +79,6 @@ export default function FaceDetailPage() {
     }
     downloadQr(value)
   };
-
-
 
   return (
     <div className="relative min-h-screen w-full bg-[url('https://pub-8f6128da76624084a24e3ae5210c2a86.r2.dev/img/characters/co-thanh-han/avatar.jpg')] bg-cover bg-center bg-no-repeat bg-fixed">

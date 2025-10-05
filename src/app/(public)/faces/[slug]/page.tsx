@@ -1,5 +1,4 @@
 import FaceDetailPage from "./FacePage";
-
-export default function Page() {
+export default async function Page() {
   return <FaceDetailPage />;
 }
