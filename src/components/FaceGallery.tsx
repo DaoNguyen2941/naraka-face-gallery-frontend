@@ -1,7 +1,7 @@
 'use client'
 
-import { PaginationResponse } from "@/types/page.type"
-import { PublicFace } from '@/types/face/publicFace.type'
+import { PaginationResponse } from "@/types"
+import { PublicFace } from '@/types'
 import FaceCardImage from './FaceCard'
 import { LoadingSpinner } from "./ui/LoadingSpinner"
 import { ImageOff } from "lucide-react" // icon

@@ -1,5 +1,4 @@
-import FaceGalleryPage from "@/components/FaceGalleryPage"
-import { FaceSort } from "@/lib/services/interface/face"
+import HotPage from "./pageHot";
 
 export const metadata = {
   title: 'hot | Tàng Mỹ Quán',
@@ -12,11 +11,8 @@ export const metadata = {
   },
 };
 
-export default function HotPage() {
+export default function Page() {
   return (
-    <div className="p-4 space-y-4">
-      <h1 className="text-xl font-bold">🔥 Xem nhiều nhất</h1>
-      <FaceGalleryPage sort={FaceSort.HOT} />
-    </div>
+    <HotPage/>
   )
 }

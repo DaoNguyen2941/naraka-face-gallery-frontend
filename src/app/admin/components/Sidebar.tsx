@@ -17,7 +17,7 @@ import {
   ChevronRight,
 } from 'lucide-react'
 import { useState } from 'react'
-import { ROUTES } from "@/lib/constants/routes";
+import { ROUTES } from "@/lib/routers/routes";
 
 const navItems = [
   { label: 'Dashboard', href: ROUTES.admin.dashboards, icon: <LayoutDashboard className="w-5 h-5" /> },

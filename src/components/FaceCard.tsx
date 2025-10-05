@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { PublicFace } from "@/types/face/publicFace.type";
+import { PublicFace } from "@/types";
 import { motion } from "framer-motion";
 import { useRouter } from 'next/navigation'
-import { buildFaceDetailUrl } from "@/lib/constants/routes";
+import { buildFaceDetailUrl } from "@/lib/routers/routes";
 
 interface FaceCardProps {
     face: PublicFace;

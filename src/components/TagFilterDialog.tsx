@@ -2,7 +2,7 @@
 
 import { X, Search } from 'lucide-react'
 import { useState, useEffect, useMemo } from 'react'
-import { Tag } from '@/types/tag/tag.type'
+import { Tag } from '@/types'
 import { PublicTag } from '@/types'
 
 export default function TagFilterDialog({

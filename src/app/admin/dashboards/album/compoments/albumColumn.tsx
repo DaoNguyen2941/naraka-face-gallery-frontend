@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { Album } from "@/types/album.type"
+import { Album } from "@/types"
 import { Button } from "@/components/ui/button"
 import { Pencil, Trash, FolderOpenDot } from "lucide-react"
 import Image from "next/image"

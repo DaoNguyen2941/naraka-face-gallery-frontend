@@ -2,9 +2,9 @@
 
 import FaceRankingItem from "../FaceRankingItem"
 import { useRouter } from "next/navigation"
-import { buildFaceDetailUrl } from "@/lib/constants/routes"
+import { buildFaceDetailUrl } from "@/lib/routers/routes"
 import { useFaces } from "@/app/(public)/hooks/useGetFaces"
-import { FaceSort } from "@/lib/services/interface/face"
+import { FaceSort } from "@/types"
 
 export default function RankingSidebar() {
   const router = useRouter()

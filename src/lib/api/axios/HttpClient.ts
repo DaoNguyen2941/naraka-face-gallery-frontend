@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError, AxiosResponse, AxiosRequestConfig } from "axios"
-import { apiRoutes } from "../constants/apiRouter"
+import { apiRoutes } from "../../routers/apiRouter"
 
 // Extend AxiosRequestConfig để thêm _retry
 interface RetryAxiosRequestConfig extends AxiosRequestConfig {
@@ -18,7 +18,7 @@ export class HttpClient {
     this.instance = axios.create({
       baseURL: apiRoutes.host,
       withCredentials: true,
-      timeout: 10000,
+      timeout: 5000,
     })
 
     this.setupInterceptors()

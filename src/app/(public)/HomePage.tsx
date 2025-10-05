@@ -1,8 +1,7 @@
 "use client";
 
-import { Suspense } from "react";
 import FaceGalleryPage from "@/components/FaceGalleryPage";
-import { FaceSort } from "@/lib/services/interface/face";
+import { FaceSort } from "@/types";
 import WelcomeBox from "@/components/WelcomeBox";
 import { Sigmar } from "next/font/google";
 import { useSearchParams } from "next/navigation";
@@ -10,7 +9,7 @@ import Image from "next/image";
 
 const sigmar = Sigmar({ weight: "400", subsets: ["latin"] });
 
-function HomeContent() {
+export default function HomePage() {
   const searchParams = useSearchParams();
   const tags = searchParams.get("tags")?.split(",") ?? undefined;
   const rawSearch = searchParams.get("search");
@@ -52,13 +51,5 @@ function HomeContent() {
         showRanking={tags ? false : true}
       />
     </div>
-  );
-}
-
-export default function HomePage() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <HomeContent />
-    </Suspense>
   );
 }

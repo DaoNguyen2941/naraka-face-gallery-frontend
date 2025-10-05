@@ -1,5 +1,5 @@
 import { Character } from "../character";
-import { File } from "../file.type";
+import { File } from "../file/file.type";
 import { Tag } from "../tag/tag.type";
 
 export type Face = {

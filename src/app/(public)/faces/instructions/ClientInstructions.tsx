@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { ArrowLeft } from 'lucide-react';
+import { useTrackPageView } from "../../hooks/track/useTrackPageView";
 
 function InstructionImage({ src, alt }: { src: string; alt: string }) {
   return (
@@ -19,7 +20,7 @@ function InstructionImage({ src, alt }: { src: string; alt: string }) {
 
 export default function ClientInstructions() {
   const router = useRouter();
-
+  useTrackPageView()
   return (
     <div className="relative min-h-screen w-full bg-[url('/Naraka.jpg')] bg-cover bg-center bg-no-repeat bg-fixed">
       <div className="max-w-5xl mx-auto p-6 space-y-6">

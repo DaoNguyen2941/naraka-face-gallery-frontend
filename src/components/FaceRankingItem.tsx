@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { PublicFace } from "@/types/face/publicFace.type";
+import { PublicFace } from "@/types";
 
 interface FaceRankingItemProps {
   face: PublicFace;

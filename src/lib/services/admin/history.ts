@@ -1,9 +1,9 @@
-import http from "@/lib/axios/HttpClient";
+import http from "@/lib/api/axios/HttpClient";
 import { AxiosResponse } from "axios";
-import { apiRoutes } from "@/lib/constants/apiRouter";
-import { ParamGetHistory, defaultHistoryParams} from "../interface";
-import { PaginationResponse } from "@/types/page.type";
-import { History } from "@/types/history";
+import { apiRoutes } from "@/lib/routers/apiRouter";
+import { ParamGetHistory, defaultHistoryParams } from "@/types";
+import { PaginationResponse } from "@/types";
+import { History } from "@/types";
 
 export const adminGetHistoryService = async (
   params: ParamGetHistory = {}

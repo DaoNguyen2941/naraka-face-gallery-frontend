@@ -11,7 +11,8 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { downloadQrFileService } from "@/lib/services/public/face.service";
 import { useTrackFaceView } from "../../hooks/track/useTrackFaceView";
-import { ROUTES } from "@/lib/constants/routes";
+import { useTrackPageView } from "../../hooks/track/useTrackPageView";
+import { ROUTES } from "@/lib/routers/routes";
 import { useParams } from "next/navigation";
 
 export default function FaceDetailPage() {
@@ -19,6 +20,7 @@ export default function FaceDetailPage() {
   const [lightboxIndex, setLightboxIndex] = useState<number>(-1);
   const router = useRouter();
   useTrackFaceView(slug)
+  useTrackPageView()
 
   const {
     data: faceData,

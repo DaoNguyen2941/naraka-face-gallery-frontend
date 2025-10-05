@@ -1,6 +1,6 @@
-import http from "@/lib/axios/HttpClient";
+import http from "@/lib/api/axios/HttpClient";
 import { AxiosResponse } from "axios";
-import { apiRoutes } from "@/lib/constants/apiRouter";
+import { apiRoutes } from "@/lib/routers/apiRouter";
 import { PublicCharacter } from "@/types";
 
 export const getCharacterService = async (): Promise<PublicCharacter[]> => {

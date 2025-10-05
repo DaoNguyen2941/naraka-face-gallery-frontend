@@ -3,11 +3,13 @@ import { notFound } from "next/navigation"
 import { useParams } from "next/navigation";
 import { useGetCharacter } from "@/app/(public)/hooks/useGetCharacter";
 import FaceGalleryPage from "@/components/FaceGalleryPage";
+import { useTrackPageView } from "../../hooks/track/useTrackPageView";
 
 export default function CharacterPage() {
   const { slug } = useParams<{ slug: string }>();
   const { data: characters = [], isLoading } = useGetCharacter()
   const character = characters.find((char) => char.slug === slug)
+  useTrackPageView()
 
   if (!isLoading && !character) return notFound()
 

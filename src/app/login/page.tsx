@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
 import { adminLoginService, AdminLoginData } from "@/lib/services/admin/auth"
-import { ROUTES } from "@/lib/constants/routes"
+import { ROUTES } from "@/lib/routers/routes"
 import { AxiosError } from "axios"
 import Image from "next/image"
 

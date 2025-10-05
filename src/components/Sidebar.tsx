@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronDown, ChevronRight } from "lucide-react"
 import { useGetCharacter } from '@/app/(public)/hooks/useGetCharacter'
-import { menuSidebar, buildCharacterDetailUrl } from '@/lib/constants/routes'
+import { menuSidebar, buildCharacterDetailUrl } from '@/lib/routers/routes'
 import Link from "next/link"
 
 export default function Sidebar({

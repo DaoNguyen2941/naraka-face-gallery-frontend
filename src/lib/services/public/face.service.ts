@@ -1,10 +1,11 @@
-import http from "@/lib/axios/HttpClient";
+import http from "@/lib/api/axios/HttpClient";
 import { AxiosResponse } from "axios";
-import { apiRoutes } from "@/lib/constants/apiRouter";
-import { PaginationResponse } from "@/types/page.type";
-import { ParamGetFace, defaultFaceParams } from "../interface/face";
-import { PublicFace } from "@/types/face/publicFace.type";
-import { PublicFaceDetails } from "@/types/face/publicFaceDetails.type";
+import { apiRoutes } from "@/lib/routers/apiRouter";
+import { PaginationResponse } from "@/types";
+import { ParamGetFace, defaultFaceParams } from "../../../types";
+import { PublicFace } from "@/types";
+import { PublicFaceDetails } from "@/types";
+import { AxiosInstance } from "axios"
 
 export async function downloadQrFileService(urlFile: string, slug: string) {
   const urlApi = apiRoutes.public.face(slug) + `/download`;
@@ -33,7 +34,7 @@ export const getFaceService = async (
   params: ParamGetFace = {}
 ): Promise<PaginationResponse<PublicFace>> => {
   const merged = { ...defaultFaceParams, ...params };
-  const { tagSlugs, sort,...rest } = merged;
+  const { tagSlugs, sort, ...rest } = merged;
 
   const finalParams: Record<string, string | number | boolean> = { ...rest }
   if (tagSlugs && tagSlugs.length > 0) {
@@ -51,3 +52,25 @@ export const getFaceService = async (
   return response.data;
 };
 
+export const getFacesService = async (
+  axiosInstance: AxiosInstance,
+  params: ParamGetFace = {}
+): Promise<PaginationResponse<PublicFace>> => {
+  const merged = { ...defaultFaceParams, ...params };
+  const { tagSlugs, sort, ...rest } = merged;
+
+  const finalParams: Record<string, string | number | boolean> = { ...rest }
+  if (tagSlugs && tagSlugs.length > 0) {
+    finalParams.tagSlugs = tagSlugs.join(','); // gửi dạng tagSlugs=slug1,slug2
+  }
+
+  if (sort) {
+    finalParams.sort = sort
+  }
+
+  const response: AxiosResponse = await axiosInstance(apiRoutes.public.face(), {
+    params: finalParams,
+  });
+
+  return response.data;
+};

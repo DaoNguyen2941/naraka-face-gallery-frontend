@@ -1,6 +1,6 @@
 'use client'
 import FaceCard from "./FaceCard";
-import { Face } from "@/types/face/face.type";
+import { Face } from "@/types";
 
 interface FaceCardGridProps {
   data: Face[]

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Face } from "@/types/face/face.type";
+import { Face } from "@/types";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button"
 

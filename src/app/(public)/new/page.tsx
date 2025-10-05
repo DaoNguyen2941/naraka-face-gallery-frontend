@@ -1,5 +1,9 @@
-import FaceGalleryPage from "@/components/FaceGalleryPage"
-import { FaceSort } from "@/lib/services/interface/face"
+import NewPage from "./newPage";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query"
+import { createServerHttp } from "@/lib/api/axios/createServerHttp";
+import { FaceSort } from "@/types";
+import { getFacesService } from "@/lib/services";
+import { getQueryClient } from "@/lib/queryClient";
 
 export const metadata = {
   title: 'new | Tàng Mỹ Quán',
@@ -11,11 +15,23 @@ export const metadata = {
     images: [{ url: 'https://cdn.narakaqrface.com/public/banner.png', width: 1200, height: 630, alt: 'new' }],
   },
 };
-export default function NewPage() {
+
+export default async function Page() {
+  const queryClient = getQueryClient()
+  const serverHttp = await createServerHttp()
+
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ["Qr-face", { sort: FaceSort.NEW }],
+    queryFn: ({ pageParam = 1 }) =>
+      getFacesService(serverHttp, { sort: FaceSort.NEW, page: pageParam }),
+    initialPageParam: 1,
+  });
+  const dehydratedState = dehydrate(queryClient);
+
   return (
-    <div className="p-4 space-y-4">
-      <h1 className="text-xl font-bold">🔥 Mới cập nhật</h1>
-      <FaceGalleryPage sort={FaceSort.NEW} />
-    </div>
+    <HydrationBoundary state={dehydratedState}>
+      <NewPage />
+    </HydrationBoundary>
+
   )
 }

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 import FaceGallery from "@/components/FaceGallery"
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner"
-import { FaceSortOption } from "@/lib/services/interface/face"
+import { FaceSortOption } from "@/types"
 import RankingSidebar from "./ui/RankingSidebar"
 import { useFaces } from "@/app/(public)/hooks/useGetFaces"
 
@@ -12,7 +12,7 @@ interface FaceGalleryPageProps {
     tags?: string[] | undefined
     showRanking?: boolean
     search?: string
-    character?: string 
+    character?: string
 }
 
 export default function FaceGalleryPage({ sort = undefined, tags = undefined, showRanking, search, character }: FaceGalleryPageProps) {

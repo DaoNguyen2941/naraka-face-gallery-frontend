@@ -17,16 +17,16 @@ import Image from "next/image"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
-import { Face } from "@/types/face/face.type"
+import { Face } from "@/types"
 import { Tag } from "@/types"
 import { Character } from "@/types"
-import { formDataQrFace, formDataQrFaceUpdate, filesData, } from "@/lib/services/interface/face"
+import { formDataQrFace, formDataQrFaceUpdate, filesData, } from "@/types"
 import {
   createQrFaceService,
   updateQrFaceService,
 } from "@/lib/services/admin/face"
 import { useAdminCharacterList } from "@/app/admin/hooks/useAdminCharacterList"
-import type { File as MyFile } from "@/types/file.type"
+import type { File as MyFile } from "@/types"
 import { getChangedFields } from "@/lib/utils/getChangedFields"
 import { AxiosError } from "axios"
 

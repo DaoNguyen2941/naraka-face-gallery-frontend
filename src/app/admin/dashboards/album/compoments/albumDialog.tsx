@@ -16,7 +16,7 @@ import Image from "next/image"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { createAlbumService, updateAlbumService } from "@/lib/services/admin/album"
-import { Album } from "@/types/album.type"
+import { Album } from "@/types"
 import { Loader2 } from "lucide-react"
 import { formDataCharacter } from "@/lib/services/admin/characters"
 

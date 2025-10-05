@@ -1,9 +1,9 @@
-import http from "@/lib/axios/HttpClient";
+import http from "@/lib/api/axios/HttpClient";
 import { AxiosResponse } from "axios";
-import { apiRoutes } from "@/lib/constants/apiRouter";
-import { Face } from "@/types/face/face.type";
-import { PaginationResponse } from "@/types/page.type";
-import { ParamGetFace, formDataQrFace, filesData, formDataQrFaceUpdate, defaultFaceParams } from "../interface/face";
+import { apiRoutes } from "@/lib/routers/apiRouter";
+import { Face } from "@/types";
+import { PaginationResponse } from "@/types";
+import { ParamGetFace, formDataQrFace, filesData, formDataQrFaceUpdate, defaultFaceParams } from "../../../types/face/face.interface";
 
 export const adminGetFaceService = async (
   params: ParamGetFace = {}

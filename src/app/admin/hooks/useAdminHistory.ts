@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { adminGetHistoryService } from "@/lib/services/admin/history"
-import { ParamGetHistory } from "@/lib/services/interface";
-
+import { ParamGetHistory } from "@/types";
 export function useAdminHistory(params: ParamGetHistory) {
   return useQuery({
     queryKey: ['admin-history', params], // thêm params vào queryKey để cache riêng
